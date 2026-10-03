@@ -4,6 +4,8 @@ Source for [colbywonn.com](https://colbywonn.com), my personal site. I'm a Compu
 
 The site is built with Jekyll and hosted on GitHub Pages. It uses no theme, just one layout, one stylesheet, and a couple of small scripts.
 
+My personal experince with Jekyll is minimum, so this website was generated with AI tools such as Claude Opus 5.5
+
 ## Layout
 
 | Path | Contents |
