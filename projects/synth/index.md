@@ -44,4 +44,4 @@ Each module was built against a golden-model testbench, and I mutation tested th
 
 Poly-Synth is taped out on Tiny Tapeout SKY26c, and silicon is pending. Once the chips arrive, I'll bring the design up on the Tiny Tapeout demo board, driving it over SPI from the board's RP2350 and listening through the RC filter described in the [datasheet](https://github.com/Colbywonn/tt-poly-synth/blob/main/docs/info.md).
 
-The design has no envelope (ADSR) or other audio shaping yet, so notes start and stop with a click. Adding that is the plan for v2.0.
+The design has no envelope (ADSR) or other audio shaping yet, so every note starts and stops abruptly. Adding that is the plan for v2.0.
