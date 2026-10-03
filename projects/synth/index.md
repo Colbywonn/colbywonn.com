@@ -7,7 +7,10 @@ description: A 3-voice polyphonic synthesizer ASIC, taped out on Tiny Tapeout SK
 # Poly-Synth
 
 <p class="status">Taped out on Tiny Tapeout SKY26c, silicon pending</p>
-<p><a href="https://github.com/Colbywonn/tt-poly-synth" target="_blank" rel="noopener">Repository on GitHub</a></p>
+<ul class="links">
+  <li><a href="https://github.com/Colbywonn/tt-poly-synth" target="_blank" rel="noopener">Repository on GitHub</a></li>
+  <li><a href="https://tinytapeout.com/chips/ttsky26c/tt_um_colbywonn_poly_synth/" target="_blank" rel="noopener">Tiny Tapeout project page</a></li>
+</ul>
 
 Poly-Synth is a 3-voice polyphonic synthesizer ASIC, taped out on Tiny Tapeout SKY26c. It takes an input as a tuning word over SPI, passes it through one of 3 DDS cores, which consist of a phase accumulator and a shaper. Finally, the 3 voices are mixed arithmetically and are output via oversampling with a 1st-order Sigma-Delta module.
 
@@ -35,8 +38,10 @@ An arrangement of the theme composed by Kinuyo Yamashita and Satoe Terashima for
 
 ## Verification
 
-<!-- TODO: your words. Golden models per module, mutation testing to confirm the testbenches catch bugs, FPGA MIDI playback. Add the scope frequency check if you do it. -->
+Each module was built against a golden-model testbench, and I mutation tested those testbenches to make sure they actually catch bugs. The cocotb testbench runs against both the RTL and the post-layout gate-level netlist. Finally, the design ran on an iCEBreaker FPGA, playing MIDI songs straight into a pair of headphones with no amplifier.
 
 ## Status and next steps
 
-<!-- TODO: taped out on SKY26c, silicon expected in about a year. What you'll do at bring-up. -->
+Poly-Synth is taped out on Tiny Tapeout SKY26c, and silicon is pending. Once the chips arrive, I'll bring the design up on the Tiny Tapeout demo board, driving it over SPI from the board's RP2350 and listening through the RC filter described in the [datasheet](https://github.com/Colbywonn/tt-poly-synth/blob/main/docs/info.md).
+
+The design has no envelope (ADSR) or other audio shaping yet, so notes start and stop with a click. Adding that is the plan for v2.0.
