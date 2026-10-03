@@ -13,9 +13,19 @@ Poly-Synth is a 3-voice polyphonic synthesizer ASIC, taped out on Tiny Tapeout S
 
 ## Hear it
 
-<!-- TODO: your OBS recording. Label it as the FPGA prototype. Uncomment once assets/audio/fpga-demo.mp3 exists.
-<audio controls preload="none" src="/assets/audio/fpga-demo.mp3"></audio>
--->
+These two clips were recorded from the FPGA prototype of Poly-Synth. A Python program decodes MIDI songs into the tuning words each note needs, then bit-bangs them to a microcontroller that drives the synth.
+
+### "Overworld" from *The Legend of Zelda*
+
+An arrangement of the theme composed by Koji Kondo.
+
+<audio controls preload="none" src="/assets/audio/overworld.mp3"></audio>
+
+### "Vampire Killer" from *Castlevania*
+
+An arrangement of the theme composed by Kinuyo Yamashita and Satoe Terashima for the original game.
+
+<audio controls preload="none" src="/assets/audio/vampire-killer.mp3"></audio>
 
 ## System
 
