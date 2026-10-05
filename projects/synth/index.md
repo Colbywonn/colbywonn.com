@@ -1,6 +1,7 @@
 ---
 layout: default
 title: Poly-Synth
+pcb: synth
 description: A 3-voice polyphonic synthesizer ASIC, taped out on Tiny Tapeout SKY26c.
 ---
 

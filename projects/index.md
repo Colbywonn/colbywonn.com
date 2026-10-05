@@ -1,6 +1,7 @@
 ---
 layout: default
 title: Projects
+pcb: projects
 description: Projects by Colby Miller in digital design, verification, and computer engineering.
 ---
 

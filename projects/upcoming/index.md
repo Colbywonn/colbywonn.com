@@ -1,6 +1,7 @@
 ---
 layout: default
 title: Upcoming Projects
+pcb: upcoming
 description: Projects Colby Miller is building or planning next.
 ---
 
