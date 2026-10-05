@@ -38,7 +38,7 @@ An arrangement of the theme composed by Kinuyo Yamashita and Satoe Terashima for
 
 ## Verification
 
-Each module was built against a golden-model testbench, and I mutation tested those testbenches to make sure they actually catch bugs. The cocotb testbench runs against both the RTL and the post-layout gate-level netlist. Finally, the design ran on an iCEBreaker FPGA, playing MIDI songs straight into a pair of headphones with no amplifier.
+Each module was built against a golden-model testbench, and I mutation tested those testbenches to make sure they actually catch bugs. The top-level testbench runs against both the RTL and the post-layout gate-level netlist. Finally, the design ran on an iCEBreaker FPGA, playing MIDI songs straight into a pair of headphones with no amplifier.
 
 ## Status and next steps
 

@@ -210,7 +210,17 @@ button:focus-visible { outline: 2px solid var(--navy); outline-offset: 3px; }
 /* Homepage intro block, centered under the centered hero name */
 .intro { text-align: center; }
 .intro .tagline { margin-inline: auto; }
+.intro .tagline:has(+ .seeking) { margin-bottom: 0.6rem; }
 .intro .links { justify-content: center; }
+.seeking { margin: 0 0 1.5rem; color: var(--navy); font-weight: 600; }
+
+/* Inline tool list closing the About Me section */
+.toolset { margin-top: 1.75rem; padding-top: 1rem; border-top: 1px solid var(--rule); }
+.toolset-label { display: block; margin-bottom: 0.3rem; font-family: var(--display); font-weight: 700; color: var(--navy); }
+.toolset ul { display: flex; flex-wrap: wrap; row-gap: 0.2rem; margin: 0; padding: 0; list-style: none; font-size: 0.92rem; }
+.toolset li { white-space: nowrap; }
+/* Separator trails each item, so a wrapped line never starts with a dot */
+.toolset li:not(:last-child)::after { content: "\00B7"; margin: 0 0.55rem; }
 
 .links { display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; padding: 0; margin: 0; list-style: none; }
 .links a { font-weight: 600; }
