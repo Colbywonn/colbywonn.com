@@ -7,9 +7,10 @@
 # The same seed always produces the same board; _tools/build-pcb.sh regenerates every page's tile.
 #
 # Layers, in routing order: a large focal chip beside the nav, smaller chips whose pad rows launch
-# buses or fan out locally, two-pad passives around each chip, long buses between the clusters,
-# then medium traces in the gaps. Buses bend at 45 degrees, fan apart at their ends, and sometimes
-# jog around a via. One pad has lifted off the board. Collision checks wrap around the tile edges
+# buses or fan out locally, two-pad passives and via arrays around the chips, long buses at mixed
+# spacings, a few fat power traces, single wandering traces, then medium traces in the gaps.
+# Buses bend at 45 degrees, fan apart at their ends and jog around vias; single traces sometimes
+# carry a length-matching serpentine. One pad has lifted off the board. Collision checks wrap around the tile edges
 # (a torus), and the content is drawn with 8 shifted copies, so traces leaving one edge re-enter
 # the opposite one.
 use strict;
@@ -22,9 +23,10 @@ $seed //= 7; $W //= 1600; $H //= 1200; $color //= '#eaeef5';
 die "WIDTH and HEIGHT must be multiples of 50\n" if $W % 50 || $H % 50;
 srand($seed);
 
-my $PITCH = 12;     # bus trace spacing (centerline)
-my $GAP   = 9;      # clearance between unrelated copper edges
-my $TR    = 1.5;    # trace half-width
+# PITCH and TR are package variables so try_bus can vary them per bus with local()
+our $PITCH = 12;    # bus trace spacing (centerline)
+my  $GAP   = 8;     # clearance between unrelated copper edges
+our $TR    = 1.5;   # trace half-width
 my $VR    = 6;      # via outer radius
 my $PR    = 7;      # pad collision radius
 my $B     = 50;     # spatial hash bucket size
@@ -110,17 +112,20 @@ sub offset_line {
   \@r;
 }
 
-my (@paths, @vias, @pads);
+my (@paths, @pathw, @vias, @pads);   # @pathw: each path's stroke width
 
 sub pick { my @w = @_; my $t = 0; $t += $_->[1] for @w; my $r = rand($t); for (@w) { return $_->[0] if ($r -= $_->[1]) < 0 } $w[-1][0] }
 
 # Routes one bus. Options: n (traces), d0 (start direction), sx/sy (start), pads (pad row at the
 # start: 1 forces, 0 forbids, undef = random), seg [min,max] segment count, orth/diag [min,max]
-# run lengths, minlen (shortest total centerline worth keeping).
+# run lengths, minlen (shortest total centerline worth keeping), w (trace width), pitch (trace
+# spacing), and the chances of fanned ends (fan), a via dodge (dodge) and a serpentine (meander).
 sub try_bus {
   my %o = @_;
+  local $TR = ($o{w} // 3) / 2;
+  local $PITCH = $o{pitch} // 12;
   my $n = $o{n} // pick([1,3],[2,3],[3,3],[4,2],[5,1.5],[6,1]);
-  my $d0 = $o{d0} // pick(map { [$_, $_ % 2 ? 1 : 3] } 0..7);
+  my $d0 = $o{d0} // pick(map { [$_, $_ % 2 ? 2 : 3] } 0..7);
   my ($sx, $sy) = defined $o{sx} ? ($o{sx}, $o{sy}) : (4*int(rand($W/4)), 4*int(rand($H/4)));
   my ($smin, $smax) = @{$o{seg} // [3, 8]};
   my ($omin, $omax) = @{$o{orth} // [100, 500]};
@@ -189,6 +194,7 @@ sub try_bus {
     }
   }
   dodge(\@lines, $n, \@ends) if $n >= 2 && rand() < ($o{dodge} // 0.8);
+  meander($lines[0]) if $n == 1 && rand() < ($o{meander} // 0.45);
   my @cand;
   for my $l (@lines) { push @cand, [@{$l->[$_-1]}, @{$l->[$_]}, $TR] for 1..$#$l }
   push @cand, [$_->[1], $_->[2], $_->[1], $_->[2], $_->[0] eq 'via' ? $VR : $PR] for @ends;
@@ -200,6 +206,7 @@ sub try_bus {
   } }
   add_item($_) for @cand;
   push @paths, $_ for @lines;
+  push @pathw, (2*$TR) x @lines;
   # pads keep [x, y, dir, trace index in bus, bus size, index of their trace in @paths]
   for (@ends) { $_->[0] eq 'via' ? push(@vias, [$_->[1], $_->[2]]) : push(@pads, [@$_[1..5], $#paths - $_->[5] + 1 + $_->[4]]) }
   1;
@@ -288,6 +295,40 @@ sub dodge {
   push @$ends, ['via', @$v];
 }
 
+# Length-matching serpentine: a square-wave meander spliced into one straight run of a trace
+sub meander {
+  my ($l) = @_;
+  my @segs = grep {
+    my ($a, $b) = ($l->[$_-1], $l->[$_]);
+    (abs($a->[0]-$b->[0]) < 0.01 || abs($a->[1]-$b->[1]) < 0.01) &&
+      sqrt(($b->[0]-$a->[0])**2 + ($b->[1]-$a->[1])**2) >= 110
+  } 1 .. $#$l;
+  return unless @segs;
+  my $k = $segs[int rand @segs];
+  my ($a, $b) = ($l->[$k-1], $l->[$k]);
+  my $len = sqrt(($b->[0]-$a->[0])**2 + ($b->[1]-$a->[1])**2);
+  my ($ux, $uy) = (($b->[0]-$a->[0])/$len, ($b->[1]-$a->[1])/$len);
+  my ($wx, $wy) = (-$uy, $ux);
+  my $A = 7 + int(rand(4));            # amplitude either side of the run
+  my $p = 2*$TR + 5;                   # leg spacing: trace width plus a small gap
+  my $cnt = 4 + int(rand(6));          # number of legs
+  my $span = $cnt * $p;
+  return if $span > $len - 40;
+  my $s = 20 + rand($len - 40 - $span);
+  my $side = rand() < 0.5 ? 1 : -1;
+  my @q = ([$a->[0] + $ux*$s, $a->[1] + $uy*$s]);
+  my $mv = sub { my ($du, $dw) = @_; my $c = $q[-1]; push @q, [$c->[0] + $ux*$du + $wx*$dw, $c->[1] + $uy*$du + $wy*$dw] };
+  $mv->(0, $A*$side);
+  for my $i (1 .. $cnt) {
+    $mv->($p, 0);
+    if ($i < $cnt) { $side = -$side; $mv->(0, 2*$A*$side) }
+  }
+  $mv->(0, -$A*$side);
+  my @c = map { [@{$q[$_-1]}, @{$q[$_]}, $TR] } 1 .. $#q;
+  return unless all_clear_items(\@c);
+  splice @$l, $k, 0, @q;
+}
+
 sub bus_geom {
   my ($pts, $ds, $n) = @_;
   [ map { offset_line($pts, $ds, ($_ - ($n-1)/2) * $PITCH) } 0 .. $n-1 ];
@@ -316,7 +357,7 @@ sub place_chip {
                [$cx+$ex,$cy+$ey,$cx-$ex,$cy+$ey], [$cx-$ex,$cy+$ey,$cx-$ex,$cy-$ey]);
   return 0 unless all_clear_items([ (map { [@$_, $TR] } @probe), [$cx, $cy, $cx, $cy, ($ex > $ey ? $ex : $ey)] ]);
   # ...and keep chips apart so each one gets its own neighbourhood
-  return 0 if grep { abs($_->[0]-$cx) < 260 && abs($_->[1]-$cy) < 260 } map { my $b = $_; map { [$b->[0]+$_->[0], $b->[1]+$_->[1]] } ([0,0],[$W,0],[-$W,0],[0,$H],[0,-$H]) } @bodies;
+  return 0 if grep { abs($_->[0]-$cx) < 220 && abs($_->[1]-$cy) < 220 } map { my $b = $_; map { [$b->[0]+$_->[0], $b->[1]+$_->[1]] } ([0,0],[$W,0],[-$W,0],[0,$H],[0,-$H]) } @bodies;
   $cid++;
   add_item([$_->[0], $_->[1], $_->[2], $_->[3], 1.25, $cid]) for
     ([$cx-$hx,$cy-$hy,$cx+$hx,$cy-$hy], [$cx+$hx,$cy-$hy,$cx+$hx,$cy+$hy],
@@ -381,19 +422,53 @@ for my $b (@bodies) {
     add_item($_) for @c;
     push @smd, map { [@$_, $d] } @pp;
     push @paths, [[$_->[0], $_->[1]], [$_->[2], $_->[3]]] for @st;
+    push @pathw, (3) x @st;
     push @vias, @sv;
     $got++;
   }
 }
 
-# 3. Long buses crossing between the clusters
-for (1 .. 3000) {
-  $placed += try_bus(n => pick([3,2],[4,3],[5,3],[6,2],[8,1]), seg => [3, 8], orth => [120, 520], minlen => 420);
+# Via arrays: small stitching grids beside some chips
+for my $b (@bodies) {
+  next if rand() < 0.5;
+  my ($bx, $by, $bhx, $bhy) = @$b;
+  for (1 .. 30) {
+    my ($cols, $rows) = (2 + int(rand(3)), 2 + int(rand(2)));
+    my $a = rand(6.2832);
+    my $r = ($bhx > $bhy ? $bhx : $bhy) + 50 + rand(80);
+    my ($x0, $y0) = ($bx + cos($a)*$r, $by + sin($a)*$r);
+    my @g = map { my $i = $_; map { [$x0 + $i*16, $y0 + $_*16] } 0 .. $rows-1 } 0 .. $cols-1;
+    my @c = map { [@$_, @$_, $VR] } @g;
+    # the grid's own vias sit 16 apart, so check them against the board only
+    next unless all_clear_items(\@c);
+    add_item($_) for @c;
+    push @vias, @g;
+    last;
+  }
 }
 
-# 4. Medium traces filling the gaps
+# 3. Long buses crossing between the clusters, at mixed spacings
 for (1 .. 3000) {
-  $placed += try_bus(n => pick([1,3],[2,3],[3,2]), seg => [2, 6], orth => [60, 300], minlen => 180, pads => 0);
+  $placed += try_bus(n => pick([3,2],[4,3],[5,3],[6,2],[8,1]), pitch => pick([10,1],[12,3],[14,1]),
+                     seg => [3, 9], orth => [60, 520], diag => [24, 220], minlen => 420);
+}
+
+# Power: a few fat traces, singly or in pairs
+for (1 .. 400) {
+  $placed += try_bus(n => pick([1,2],[2,1]), w => 5.5, pitch => 16, seg => [2, 6], orth => [100, 420],
+                     diag => [30, 160], minlen => 300, pads => 0, meander => 0);
+}
+
+# 4. Wanderers: single traces that weave between everything with many turns, often meandering
+for (1 .. 2500) {
+  $placed += try_bus(n => 1, w => pick([2,1],[3,2]), seg => [5, 12], orth => [24, 160], diag => [16, 100],
+                     minlen => 220, pads => 0, meander => 0.7);
+}
+
+# 5. Medium traces filling the gaps, some thin
+for (1 .. 3000) {
+  $placed += try_bus(n => pick([1,3],[2,3],[3,2]), w => pick([2,1],[3,3]), seg => [2, 6], orth => [60, 300],
+                     minlen => 180, pads => 0);
 }
 
 # Loose stitching vias in leftover space
@@ -420,7 +495,11 @@ my @liftc = grep {
   my $fromc = abs($_->[0] - $W/2);
   $_->[3] == 0 && $_->[4] >= 3 && sqrt($dx*$dx + $dy*$dy) > 400 && $fromc > 440 && $fromc < 680
 } @pads;
-my $lifted = $liftc[int(@liftc / 2)];
+# Prefer the first screenful (below the nav), so short pages like the 404 still show it
+my @onscreen = grep { $_->[1] > 150 && $_->[1] < 650 } @liftc;
+@liftc = @onscreen if @onscreen;
+# ...and the one nearest the sheet, which the most window widths show
+my ($lifted) = sort { abs($a->[0] - $W/2) <=> abs($b->[0] - $W/2) || $a->[1] <=> $b->[1] } @liftc;
 my $liftsvg = '';
 if ($lifted) {
   my ($x, $y, $d, undef, undef, $pi) = @$lifted;
@@ -435,7 +514,10 @@ if ($lifted) {
   warn "no pad in the visible margin to lift; try another seed\n";
 }
 my $body = '';
-$body .= '<path d="M' . join('L', map { f($_->[0]) . ' ' . f($_->[1]) } @$_) . "\"/>\n" for @paths;
+for my $i (0 .. $#paths) {
+  my $sw = ($pathw[$i] // 3) == 3 ? '' : ' stroke-width="' . f($pathw[$i]) . '"';
+  $body .= '<path d="M' . join('L', map { f($_->[0]) . ' ' . f($_->[1]) } @{$paths[$i]}) . "\"$sw/>\n";
+}
 my $vb = join('', map { '<circle cx="' . f($_->[0]) . '" cy="' . f($_->[1]) . "\" r=\"4.5\"/>\n" } @vias);
 my $pb = $liftsvg;
 for my $p (@pads) {

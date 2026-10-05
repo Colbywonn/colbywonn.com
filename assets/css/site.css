@@ -68,12 +68,21 @@ body {
   font-family: var(--sans);
   font-size: 1.0625rem;
   line-height: 1.65;
+  /* Column layout so main can grow and push the footer to the foot of short pages */
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
 }
+main { flex: 1 0 auto; }
+/* main no longer collapses its last margin into the footer's, so drop it to keep the same gap */
+main > :last-child { margin-bottom: 0; }
 
 /* Body is full-width so the pinned header can span the page; content columns are constrained here. */
 .site-nav-inner,
 main,
 .site-footer {
+  width: 100%; /* flex items with auto margins would otherwise shrink to fit */
   max-width: var(--measure);
   margin-inline: auto;
   padding-inline: var(--gutter);
@@ -123,7 +132,7 @@ h1.name-mask {
    are only about 1.5rem wide. */
 @media (min-width: 53rem) {
   html { background: var(--bg) var(--pcb, none) center top / 1600px 1200px; } /* --pcb: set per page by the layout */
-  body { position: relative; min-height: 100vh; }
+  body { position: relative; }
   body::before {
     content: "";
     position: absolute;
