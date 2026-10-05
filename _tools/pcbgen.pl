@@ -150,7 +150,7 @@ sub try_bus {
       $len = 4*int($len * (1 - 0.1*$attempt) / 4) if $attempt > 2;
       # Each bend pulls the inner traces' corners in by up to ~2.5px per trace; keep every run
       # long enough that wide buses never fold back on themselves
-      my $minrun = 5*($n-1) + 8;
+      my $minrun = 0.42*$PITCH*($n-1) + 8;
       $len = $minrun if $len < $minrun;
       my ($ux,$uy) = unit($d);
       my ($lx,$ly) = @{$pts[-1]};
@@ -169,10 +169,19 @@ sub try_bus {
 
   # Ends: the bus either fans out (traces peel off one by one to their own vias) or stops in a
   # staggered via row; the start can instead be a pad row when it leaves orthogonally
-  my $padstart = $o{pads} // (($ds[0] % 2 == 0) && $n >= 2 && rand() < 0.45);
+  my $padstart = $o{pads} // (($ds[0] % 2 == 0) && $n >= 2 && $PITCH >= 11 && rand() < 0.45);
   my $fanp = $o{fan} // 0.6;
   my @lines = map { [ map { [@$_] } @$_ ] } @$geom;
   my @ends;
+  # Tight buses always break out: their vias would not fit side by side in a row
+  if ($n >= 3 && $total >= 200 && ($PITCH < 11 || rand() < ($o{bo} // 0.8))) {
+    # Breakout: every trace joins and leaves the bus at its own point (see breakout)
+    my $r = breakout(\@lines, $n, $padstart) or return 0;
+    @lines = @{$r->[0]};
+    push @ends, @{$r->[1]};
+    push @ends, map { ['pad', @{$r->[2][$_]}, $ds[0], $_, $n] } 0 .. $n-1 if $padstart;
+  } else {
+  return 0 if $PITCH < 11;
   unless ($n >= 2 && rand() < $fanp && fan_tails(\@lines, $ds[-1], $n, 1, \@ends)) {
     my ($ex,$ey) = unit($ds[-1]);
     for my $j (0 .. $n-1) {
@@ -193,7 +202,9 @@ sub try_bus {
       push @ends, ['via', @{$l->[0]}];
     }
   }
-  dodge(\@lines, $n, \@ends) if $n >= 2 && rand() < ($o{dodge} // 0.8);
+  }
+  # A via on a trace's path needs room between neighbours, so only roomy buses dodge
+  dodge(\@lines, $n, \@ends) if $n >= 2 && $PITCH >= 11 && rand() < ($o{dodge} // 0.8);
   meander($lines[0]) if $n == 1 && rand() < ($o{meander} // 0.45);
   my @cand;
   for my $l (@lines) { push @cand, [@{$l->[$_-1]}, @{$l->[$_]}, $TR] for 1..$#$l }
@@ -210,6 +221,124 @@ sub try_bus {
   # pads keep [x, y, dir, trace index in bus, bus size, index of their trace in @paths]
   for (@ends) { $_->[0] eq 'via' ? push(@vias, [$_->[1], $_->[2]]) : push(@pads, [@$_[1..5], $#paths - $_->[5] + 1 + $_->[4]]) }
   1;
+}
+
+sub poly_len {
+  my $l = shift;
+  my $t = 0;
+  $t += sqrt(($l->[$_][0]-$l->[$_-1][0])**2 + ($l->[$_][1]-$l->[$_-1][1])**2) for 1 .. $#$l;
+  $t;
+}
+
+# The part of polyline l between arc lengths s0 and s1, plus the unit direction at each cut
+sub cut_poly {
+  my ($l, $s0, $s1) = @_;
+  my (@out, @u0, @u1);
+  my $acc = 0;
+  for my $i (1 .. $#$l) {
+    my ($a, $b) = ($l->[$i-1], $l->[$i]);
+    my $len = sqrt(($b->[0]-$a->[0])**2 + ($b->[1]-$a->[1])**2) or next;
+    my ($ux, $uy) = (($b->[0]-$a->[0])/$len, ($b->[1]-$a->[1])/$len);
+    @u1 = ($ux, $uy);
+    if (!@out && $s0 <= $acc + $len) {
+      my $t = $s0 - $acc; $t = 0 if $t < 0;
+      push @out, [$a->[0] + $ux*$t, $a->[1] + $uy*$t];
+      @u0 = ($ux, $uy);
+    }
+    if (@out) {
+      if ($s1 <= $acc + $len) {
+        my $t = $s1 - $acc;
+        push @out, [$a->[0] + $ux*$t, $a->[1] + $uy*$t];
+        return (\@out, \@u0, \@u1);
+      }
+      push @out, [@$b];
+    }
+    $acc += $len;
+  }
+  (\@out, \@u0, \@u1);
+}
+
+# Breakout, as on real boards: traces join and leave a bus one at a time along its route instead
+# of all together. On each side of the bus the outermost trace leaves first and joins last, so
+# nothing crosses; a leaving trace turns 45 degrees outward into its own via. Traces that run to
+# the very end (or start) of the route stop in a staggered via row instead. Returns
+# [new lines, end vias, start points] or undef if the result would collide with itself.
+sub breakout {
+  my ($lines, $n, $padstart) = @_;
+  my @o = map { ($_ - ($n-1)/2) * $PITCH } 0 .. $n-1;
+  my @L = map { poly_len($_) } @$lines;
+  my @s0 = (0) x $n;
+  my @s1 = @L;
+  my (@cap0, @cap1);
+  for my $sgn (1, -1) {
+    my @side = sort { abs($o[$b]) <=> abs($o[$a]) } grep { $o[$_]*$sgn > 1e-6 } 0 .. $n-1;
+    next unless @side;
+    # Leaving: the outermost trace goes first, each next one at least 16px further along
+    my $e = $L[$side[0]] * (0.3 + rand(0.4));
+    for my $i (0 .. $#side) {
+      my $j = $side[$i];
+      $e += 16 + rand(50) if $i;
+      return undef if $e > $L[$j] - 10;
+      $s1[$j] = $e;
+    }
+    next if $padstart;
+    # Joining: the innermost trace joins first, each one further out joins later
+    my $s = 8 + rand(30);
+    for my $i (reverse 0 .. $#side) {
+      my $j = $side[$i];
+      $s += 16 + rand(40) if $i < $#side;
+      $s0[$j] = $s;
+    }
+  }
+  for my $j (0 .. $n-1) {
+    next if $o[$j] > 1e-6 || $o[$j] < -1e-6;
+    ($cap0[$j], $cap1[$j]) = (1, 1);                               # the centre trace runs end to end
+  }
+  my (@new, @vs, @starts, @loc);
+  for my $j (0 .. $n-1) {
+    return undef if $s1[$j] - $s0[$j] < 40;
+    my ($p, $u0, $u1) = cut_poly($lines->[$j], $s0[$j], $s1[$j]);
+    my @p = @$p;
+    return undef unless @p >= 2 && @$u0 && @$u1;
+    my $sg = $o[$j] > 1e-6 ? 1 : $o[$j] < -1e-6 ? -1 : 0;
+    push @starts, [@{$p[0]}];
+    my @tail;   # [x, y] points added at the end, then at the start
+    {
+      my ($ux, $uy) = @$u1;
+      my ($dx, $dy, $T);
+      if ($cap1[$j]) { ($dx, $dy, $T) = ($ux, $uy, 6 + ($j % 2)*16) }   # staggered row
+      else {
+        my ($nx, $ny) = (-$uy*$sg, $ux*$sg);
+        ($dx, $dy, $T) = (($ux+$nx)/sqrt(2), ($uy+$ny)/sqrt(2), 10 + 4*int(rand(6)));
+      }
+      push @p, [$p[-1][0] + $dx*$T, $p[-1][1] + $dy*$T];
+      push @vs, ['via', @{$p[-1]}];
+      push @loc, [[@{$p[-2]}, @{$p[-1]}, $TR], $j], [[@{$p[-1]}, @{$p[-1]}, $VR], $j];
+    }
+    unless ($padstart) {
+      my ($ux, $uy) = @$u0;
+      my ($dx, $dy, $T);
+      if ($cap0[$j]) { ($dx, $dy, $T) = (-$ux, -$uy, 6 + ($j % 2)*16) }
+      else {
+        my ($nx, $ny) = (-$uy*$sg, $ux*$sg);
+        ($dx, $dy, $T) = ((-$ux+$nx)/sqrt(2), (-$uy+$ny)/sqrt(2), 10 + 4*int(rand(6)));
+      }
+      unshift @p, [$p[0][0] + $dx*$T, $p[0][1] + $dy*$T];
+      push @vs, ['via', @{$p[0]}];
+      push @loc, [[@{$p[1]}, @{$p[0]}, $TR], $j], [[@{$p[0]}, @{$p[0]}, $VR], $j];
+    }
+    push @new, \@p;
+  }
+  # Tails and vias must clear every other trace of the bus
+  my @all;
+  for my $j (0 .. $n-1) { my $l = $new[$j]; push @all, [[@{$l->[$_-1]}, @{$l->[$_]}, $TR], $j] for 1 .. $#$l }
+  for my $t (@loc) {
+    for my $q (@all, @loc) {
+      next if $q->[1] == $t->[1];
+      return undef if sdist(@{$t->[0]}[0..3], @{$q->[0]}[0..3]) < $t->[0][4] + $q->[0][4] + 2.5;
+    }
+  }
+  [\@new, \@vs, \@starts];
 }
 
 sub local_ok {
@@ -447,9 +576,12 @@ for my $b (@bodies) {
   }
 }
 
-# 3. Long buses crossing between the clusters, at mixed spacings
+# 3. Long buses crossing between the clusters. Each bus has its own weight: thin traces packed
+# tight, or heavier ones spread wider, and most break out trace by trace along their route.
 for (1 .. 3000) {
-  $placed += try_bus(n => pick([3,2],[4,3],[5,3],[6,2],[8,1]), pitch => pick([10,1],[12,3],[14,1]),
+  my $w = pick([1.5,2],[2,3],[2.5,2],[3,2]);
+  $placed += try_bus(n => pick([3,1],[4,2],[5,2],[6,3],[8,3],[10,2],[12,1]), w => $w,
+                     pitch => $w + pick([5,2],[6,3],[8,1]),
                      seg => [3, 9], orth => [60, 520], diag => [24, 220], minlen => 420);
 }
 
