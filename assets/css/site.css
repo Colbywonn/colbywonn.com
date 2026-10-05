@@ -260,6 +260,11 @@ button:focus-visible { outline: 2px solid var(--navy); outline-offset: 3px; }
 .project { border-top: 1px solid var(--rule); padding: 1.25rem 0; }
 .project h3 { margin: 0 0 0.25rem; }
 .project p { margin: 0 0 0.5rem; }
+/* Card with a thumbnail of the project beside the text (the whole image, uncropped) */
+.project.has-thumb { display: grid; grid-template-columns: 5.5rem 1fr; gap: 1.25rem; align-items: start; }
+.project-thumb { display: block; }
+.project-thumb img { display: block; width: 100%; height: auto; border-radius: 3px; }
+@media (max-width: 30rem) { .project.has-thumb { grid-template-columns: 4rem 1fr; gap: 1rem; } }
 .status { font-size: 0.95rem; }
 .upcoming-link { border-top: 1px solid var(--rule); margin-top: 0; padding: 1.25rem 0; }
 

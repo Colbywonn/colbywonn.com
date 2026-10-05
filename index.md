@@ -8,6 +8,7 @@ hero: Colby Miller
   <p class="tagline">Computer Engineering student at the University of Utah, with experience in digital design &amp; verification.</p>
   <p class="seeking">Looking for a hardware or digital design internship for Summer 2027.</p>
   <ul class="links">
+    <li><a href="/assets/resume.pdf" target="_blank" rel="noopener">Resume</a></li>
     <li><a href="https://github.com/Colbywonn" target="_blank" rel="noopener">GitHub</a></li>
     <li><a href="https://www.linkedin.com/in/Colbywonn" target="_blank" rel="noopener">LinkedIn</a></li>
     <li><a href="mailto:&#99;&#111;&#108;&#98;&#121;&#106;&#109;&#105;&#108;&#108;&#101;&#114;&#43;&#69;&#67;&#69;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;">Email</a></li>
@@ -38,10 +39,13 @@ Integer in mauris eu nibh euismod gravida. Duis ac tellus et risus vulputate veh
 
 ## Projects
 
-<div class="project">
-  <h3><a href="/projects/synth/">Poly-Synth</a></h3>
-  <p>A 3-voice polyphonic synthesizer ASIC built from three DDS cores, a mixer, and a sigma-delta output.</p>
-  <p class="status">Taped out on Tiny Tapeout SKY26c, silicon pending</p>
+<div class="project has-thumb">
+  <a class="project-thumb" href="/projects/synth/" tabindex="-1" aria-hidden="true"><img src="/assets/img/die-render.webp" alt="" width="1610" height="2258" loading="lazy" decoding="async"></a>
+  <div>
+    <h3><a href="/projects/synth/">Poly-Synth</a></h3>
+    <p>A 3-voice polyphonic synthesizer ASIC built from three DDS cores, a mixer, and a sigma-delta output.</p>
+    <p class="status">Taped out on Tiny Tapeout SKY26c, silicon pending</p>
+  </div>
 </div>
 
 <p class="upcoming-link"><a href="/projects/upcoming/">In progress: a RISC-V CPU, plus a redstone cell library for Yosys &#8594;</a></p>
