@@ -13,7 +13,8 @@
   {% if page.hero %}
   <link rel="preload" href="{{ '/assets/img/name-mask.webp' | relative_url }}" as="image" type="image/webp">
   {% endif %}
-  <link rel="stylesheet" href="{{ '/assets/css/site.css' | relative_url }}">
+  <!-- ?v=build time: GitHub Pages lets browsers reuse assets for 10 min, so stamp each deploy -->
+  <link rel="stylesheet" href="{{ '/assets/css/site.css' | relative_url }}?v={{ site.time | date: '%s' }}">
 </head>
 <body>
   <header class="site-header">
@@ -55,9 +56,9 @@
       </span>
     </p>
   </footer>
-  <script src="{{ '/assets/js/dropdowns.js' | relative_url }}"></script>
+  <script src="{{ '/assets/js/dropdowns.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
   {% if page.hero %}
-  <script src="{{ '/assets/js/name-mask-parallax.js' | relative_url }}"></script>
+  <script src="{{ '/assets/js/name-mask-parallax.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
   {% endif %}
 </body>
 </html>
