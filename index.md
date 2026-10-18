@@ -19,12 +19,15 @@ hero: Colby Miller
 
 <img class="headshot" src="/headshot.jpg" alt="Colby Miller" width="120" height="120" loading="lazy" decoding="async">
 
-<!-- TODO: PLACEHOLDER lorem ipsum for sizing only; replace with your words before pushing. -->
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+Hello there!
 
-Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Curabitur pretium tincidunt lacus, nulla gravida orci a odio. Nullam varius, turpis et commodo pharetra, est eros bibendum elit, nec luctus magna felis sollicitudin mauris.
+My name is Colby, and I'm a second-year student at the University of Utah. I've always loved computers, but my passion for them exploded during COVID, when I built my first PC in high school. I've been obsessed with all things computers ever since.
 
-Integer in mauris eu nibh euismod gravida. Duis ac tellus et risus vulputate vehicula. Donec lobortis risus a elit. Etiam tempor, ut ullamcorper, ligula eu tempor congue, eros est euismod turpis, id tincidunt sapien risus a quam.
+At first I learned everything I could about individual PC components so I could build better, more efficient machines. That led me to the architecture choices behind those components, and in my first year of university I carried that background into digital logic and optimization.
+
+After a two-year break for my mission, I decided it was time to start building for myself. I started learning Verilog to understand computers at a deeper level. Building my first Verilog project, [Poly-Synth](/projects/synth/), helped me find my vision: I want to design computer chips. Taking it all the way to an ASIC was a start, but I want to understand every part of digital design.
+
+There's still a lot to learn! This website is a portfolio of what I've learned so far and how I've applied it to real projects. Welcome, and take a look around. My projects are open source, so feel free to copy and modify them. I hope one of them inspires you to learn something new, too.
 
 <div class="toolset">
   <span class="toolset-label">Tools</span>
@@ -48,4 +51,4 @@ Integer in mauris eu nibh euismod gravida. Duis ac tellus et risus vulputate veh
   </div>
 </div>
 
-<p class="upcoming-link"><a href="/projects/upcoming/">In progress: a RISC-V CPU, plus a redstone cell library for Yosys &#8594;</a></p>
+<p class="upcoming-link"><a href="/projects/upcoming/">In progress: a RISC-V CPU that works as a graphing calculator, plus a redstone cell library for Yosys &#8594;</a></p>
