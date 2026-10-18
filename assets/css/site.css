@@ -125,7 +125,7 @@ h1.name-mask {
 }
 .site-nav { border-bottom: 1px solid var(--rule); }
 
-/* PCB-trace pattern on wide screens (one board per page, from _tools/pcbgen.pl; tiles wrap
+/* PCB-trace pattern on wide screens (one pre-generated board per page in assets/img/pcb/; tiles wrap
    seamlessly). It sits on the page canvas and scrolls with it. The page is one white sheet with a
    soft shadow lying on top of it, nav row included; the header is see-through beside the sheet so
    the pattern runs up to the top. The breakpoint waits until the margins beside the 50rem sheet

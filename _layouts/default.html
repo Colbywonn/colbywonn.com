@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-{%- comment -%} Each page's PCB background board: `pcb:` in its front matter, built by _tools/build-pcb.sh {%- endcomment -%}
+{%- comment -%} Each page's PCB background board: `pcb:` in its front matter picks assets/img/pcb/NAME.svg {%- endcomment -%}
 {%- assign pcb = page.pcb | default: 'home' %}
 <html lang="{{ site.lang }}" style="--pcb: url('{{ '/assets/img/pcb/' | append: pcb | append: '.svg' | relative_url }}?v={{ site.time | date: '%s' }}')">
 <head>
