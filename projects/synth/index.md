@@ -15,8 +15,6 @@ description: A 3-voice polyphonic synthesizer ASIC, taped out on Tiny Tapeout SK
 
 Poly-Synth is a 3-voice polyphonic synthesizer ASIC, taped out on Tiny Tapeout SKY26c. It takes an input as a tuning word over SPI, passes it through one of 3 DDS cores, which consist of a phase accumulator and a shaper. Finally, the 3 voices are mixed arithmetically and are output via oversampling with a 1st-order Sigma-Delta module.
 
-I used AI for guidance on this project, but I wrote every line of the RTL myself.
-
 ## Hear it
 
 These two clips were recorded from the FPGA prototype of Poly-Synth. A Python program decodes MIDI songs into the tuning words each note needs, then bit-bangs them to a microcontroller that drives the synth.
@@ -42,6 +40,10 @@ An arrangement of the theme composed by Kinuyo Yamashita and Satoe Terashima for
 ## Verification
 
 Each module was built against a golden-model testbench, and I mutation tested those testbenches to make sure they actually catch bugs. The top-level testbench runs against both the RTL and the post-layout gate-level netlist. Finally, the design ran on an iCEBreaker FPGA, playing MIDI songs straight into a pair of headphones with no amplifier.
+
+## How I used AI
+
+Before this project, I knew digital logic, but I had never heard of RTL, HDLs, or Verilog. AI was by far the fastest way to learn. It taught me the basics of the language, helped me work out the architecture, and helped me debug. Every line of the RTL was written by me. As I get better, I plan to lean on it less, especially for architecture.
 
 ## Status and next steps
 
