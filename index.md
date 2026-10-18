@@ -51,4 +51,4 @@ There's still a lot to learn! This website is a portfolio of what I've learned s
   </div>
 </div>
 
-<p class="upcoming-link"><a href="/projects/upcoming/">In progress: a RISC-V CPU that works as a graphing calculator, plus a redstone cell library for Yosys &#8594;</a></p>
+<p class="upcoming-link"><a href="/projects/upcoming/">In progress: a RISC-V graphing calculator CPU and a redstone cell library for Yosys &#8594;</a></p>
