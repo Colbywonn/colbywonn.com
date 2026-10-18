@@ -47,6 +47,6 @@ Before this project, I knew digital logic, but I had never heard of RTL, HDLs, o
 
 ## Status and next steps
 
-Poly-Synth is taped out on Tiny Tapeout SKY26c, and silicon is pending. Once the chips arrive, I'll bring the design up on the Tiny Tapeout demo board, driving it over SPI from the board's RP2350 and listening through the RC filter described in the [datasheet](https://github.com/Colbywonn/tt-poly-synth/blob/main/docs/info.md).
+Poly-Synth is taped out on Tiny Tapeout SKY26c, and silicon is pending. Once the chips arrive, I'll bring the design up on the Tiny Tapeout demo board, driving it over SPI from the board's RP2350 and listening through the RC filter described in the [datasheet](https://tinytapeout.com/chips/ttsky26c/tt_um_colbywonn_poly_synth).
 
 The design has no envelope (ADSR) or other audio shaping yet, so every note starts and stops abruptly. Adding that is the plan for v2.0.
