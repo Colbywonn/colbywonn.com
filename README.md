@@ -31,7 +31,7 @@ Except where noted below, the content and code of this website are licensed unde
 These parts are **not** covered by CC BY 4.0:
 
 - `headshot.jpg` and `assets/resume.pdf`: personal; all rights reserved.
-- `assets/img/404-shrug.webp`: a character from *Dark Souls*, © Bandai Namco Entertainment / FromSoftware.
+- `assets/img/404-knight.svg`: fan art (a polygon rendering) of a character from *Dark Souls*, © Bandai Namco Entertainment / FromSoftware.
 - `assets/audio/`: arrangements of themes from *The Legend of Zelda* (Nintendo) and *Castlevania* (Konami). The compositions belong to their rights holders.
 - `assets/fonts/`: Quantico, Poppins, and EB Garamond, each under the [SIL Open Font License 1.1](https://openfontlicense.org/).
 - `assets/img/open-in-new.svg`: the "open_in_new" icon from Google's [Material Symbols](https://github.com/google/material-design-icons), under the Apache License 2.0.
