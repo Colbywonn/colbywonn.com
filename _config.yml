@@ -9,6 +9,7 @@ plugins:
   - jekyll-sitemap
 exclude:
   - README.md
+  - LICENSE
 tagline: Digital design and verification
 social:
   name: Colby Miller
