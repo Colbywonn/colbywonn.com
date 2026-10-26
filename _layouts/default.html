@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+{%- comment -%} Each page's PCB background board: `pcb:` in its front matter picks assets/img/pcb/NAME.svg {%- endcomment -%}
+{%- assign pcb = page.pcb | default: 'home' %}
+<html lang="{{ site.lang }}" style="--pcb: url('{{ '/assets/img/pcb/' | append: pcb | append: '.svg' | relative_url }}?v={{ site.time | date: '%s' }}')">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  {% seo %}
+  <!-- ?v= busts browsers' long-lived favicon cache; bump it whenever the icons change -->
+  <link rel="icon" href="{{ '/favicon.ico?v=2' | relative_url }}" sizes="any">
+  <link rel="apple-touch-icon" href="{{ '/apple-touch-icon.png?v=2' | relative_url }}">
+  <link rel="preload" href="{{ '/assets/fonts/quantico-700.woff2' | relative_url }}" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="{{ '/assets/fonts/quantico-400.woff2' | relative_url }}" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="{{ '/assets/fonts/poppins-400.woff2' | relative_url }}" as="font" type="font/woff2" crossorigin>
+  {% if page.hero %}
+  <link rel="preload" href="{{ '/assets/img/name-mask.webp' | relative_url }}" as="image" type="image/webp">
+  {% endif %}
+  <!-- ?v=build time: GitHub Pages lets browsers reuse assets for 10 min, so stamp each deploy -->
+  <link rel="stylesheet" href="{{ '/assets/css/site.css' | relative_url }}?v={{ site.time | date: '%s' }}">
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-nav">
+      <div class="site-nav-inner">
+        <nav>
+          <a href="{{ '/' | relative_url }}"{% if page.url == '/' %} class="current"{% endif %}>Home</a>
+          <div class="dropdown{% if page.url contains '/projects/' %} current{% endif %}">
+            <span class="dropdown-toggle"><a href="{{ '/projects/' | relative_url }}" class="toggle-label">Projects</a> <span class="caret" aria-hidden="true">&#9662;</span></span>
+            <div class="dropdown-menu">
+              <a href="{{ '/projects/synth/' | relative_url }}">Poly-Synth</a>
+              <div class="dropdown-divider"></div>
+              <a href="{{ '/projects/upcoming/' | relative_url }}">Upcoming Projects</a>
+            </div>
+          </div>
+          <a href="{{ '/assets/resume.pdf' | relative_url }}" target="_blank" rel="noopener">Resume</a>
+        </nav>
+      </div>
+    </div>
+    {% if page.hero %}
+    <h1 class="name-mask">{{ page.hero }}</h1>
+    {% endif %}
+  </header>
+  <main>
+    {{ content }}
+  </main>
+  <footer class="site-footer">
+    <p>
+      <span>&copy; {{ 'now' | date: "%Y" }} Colby Miller &middot; <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></span>
+      <span class="footer-links">
+        <a href="{{ '/assets/resume.pdf' | relative_url }}" target="_blank" rel="noopener">Resume</a>
+        <a href="https://github.com/Colbywonn" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://www.linkedin.com/in/Colbywonn" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="mailto:&#99;&#111;&#108;&#98;&#121;&#106;&#109;&#105;&#108;&#108;&#101;&#114;&#43;&#69;&#67;&#69;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;">Email</a>
+      </span>
+    </p>
+  </footer>
+  {% if page.hero %}
+  <script src="{{ '/assets/js/name-mask-parallax.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
+  {% endif %}
+</body>
+</html>
