@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 600" font-family="'Poppins', 'Segoe UI', system-ui, sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#14285a"/>
+    </marker>
+  </defs>
+
+  <style>
+    .box { fill: #ffffff; stroke: #14285a; stroke-width: 2; }
+    .subbox { fill: #f3f5f9; stroke: #14285a; stroke-width: 1.5; }
+    .label { fill: #14285a; font-size: 16px; font-weight: 600; text-anchor: middle; }
+    .sublabel { fill: #14285a; font-size: 13px; font-weight: 600; text-anchor: middle; }
+    .purpose { fill: #000000; font-size: 11px; text-anchor: middle; }
+    .pin { fill: #14285a; font-size: 13px; font-family: 'IBM Plex Mono', ui-monospace, monospace; }
+    .sig { fill: #000000; font-size: 12px; font-family: ui-monospace, 'Consolas', monospace; text-anchor: middle; }
+    .sig-left { fill: #000000; font-size: 12px; font-family: ui-monospace, 'Consolas', monospace; text-anchor: start; }
+    .wire { stroke: #14285a; stroke-width: 1.75; fill: none; }
+    .boundary { fill: none; stroke: #000000; stroke-width: 1.5; stroke-dasharray: 6 5; }
+    .ext { fill: none; stroke: #000000; stroke-width: 1.5; stroke-dasharray: 3 4; }
+    .boundary-label { fill: #000000; font-size: 12px; font-style: italic; }
+  </style>
+
+  <!-- ASIC boundary -->
+  <rect class="boundary" x="60" y="15" width="700" height="445" rx="10"/>
+  <text class="boundary-label" x="72" y="32">ASIC (Tiny Tapeout SKY26c)</text>
+
+  <!-- input pins -->
+  <text class="pin" x="20" y="59">mosi</text>
+  <text class="pin" x="20" y="72">sclk</text>
+  <text class="pin" x="20" y="85">cs_n</text>
+  <path class="wire" d="M55,57 H190" marker-end="url(#arrow)"/>
+  <path class="wire" d="M55,70 H190" marker-end="url(#arrow)"/>
+  <path class="wire" d="M55,83 H190" marker-end="url(#arrow)"/>
+
+  <!-- SPI interface -->
+  <rect class="box" x="190" y="45" width="220" height="50" rx="6"/>
+  <text class="label" x="300" y="75">SPI Interface</text>
+
+  <!-- branches down to DDS cores: parallel, straight vertical -->
+  <path class="wire" d="M260,95 L260,130" marker-end="url(#arrow)"/>
+  <path class="wire" d="M340,95 L340,130" marker-end="url(#arrow)"/>
+  <text class="sig" x="222" y="116">inc0/1/2 (32b)</text>
+  <text class="sig" x="378" y="116">cfg0/1/2 (4b)</text>
+
+  <!-- DDS cores -->
+  <rect class="box" x="140" y="130" width="600" height="100" rx="6"/>
+  <text class="label" x="440" y="148">DDS cores</text>
+
+  <rect class="subbox" x="165" y="155" width="160" height="55" rx="4"/>
+  <text class="sublabel" x="245" y="174">Voice 0</text>
+  <text class="purpose" x="245" y="189">Phase accumulator</text>
+  <text class="purpose" x="245" y="201">/ shaper</text>
+
+  <rect class="subbox" x="360" y="155" width="160" height="55" rx="4"/>
+  <text class="sublabel" x="440" y="174">Voice 1</text>
+  <text class="purpose" x="440" y="189">Phase accumulator</text>
+  <text class="purpose" x="440" y="201">/ shaper</text>
+
+  <rect class="subbox" x="555" y="155" width="160" height="55" rx="4"/>
+  <text class="sublabel" x="635" y="174">Voice 2</text>
+  <text class="purpose" x="635" y="189">Phase accumulator</text>
+  <text class="purpose" x="635" y="201">/ shaper</text>
+
+  <!-- DDS cores -> mixer: one consolidated line standing in for all 3 voice busses -->
+  <path class="wire" d="M440,230 L440,266" marker-end="url(#arrow)"/>
+  <text class="sig-left" x="460" y="252">signed [13:0] &#215;3 (1/voice)</text>
+
+  <!-- mixer -->
+  <rect class="box" x="340" y="266" width="200" height="50" rx="6"/>
+  <text class="label" x="440" y="296">Mixer</text>
+
+  <!-- mixer -> sigma-delta dac -->
+  <path class="wire" d="M440,316 L440,352" marker-end="url(#arrow)"/>
+  <text class="sig-left" x="460" y="338">signed [15:0]</text>
+
+  <!-- sigma-delta dac -->
+  <rect class="box" x="340" y="352" width="200" height="50" rx="6"/>
+  <text class="label" x="440" y="382">Sigma-Delta DAC</text>
+
+  <!-- sigma-delta dac -> out (still inside asic) -->
+  <path class="wire" d="M440,402 L440,432" marker-end="url(#arrow)"/>
+  <text class="sig-left" x="460" y="422">1-bit stream</text>
+  <text class="pin" x="425" y="450">out</text>
+
+  <!-- out -> external RC filter -> audio (outside asic boundary) -->
+  <path class="ext" d="M440,455 L440,490" marker-end="url(#arrow)"/>
+  <rect class="subbox" x="360" y="490" width="160" height="40" rx="4" stroke-dasharray="3 4"/>
+  <text class="sublabel" x="440" y="514">external RC filter</text>
+
+  <path class="ext" d="M440,530 L440,560" marker-end="url(#arrow)"/>
+  <text class="label" x="440" y="580">audio</text>
+</svg>
