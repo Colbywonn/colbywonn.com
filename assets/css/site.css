@@ -1,0 +1,336 @@
+@font-face {
+  font-family: "Quantico";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/assets/fonts/quantico-400.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Quantico";
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/assets/fonts/quantico-400-italic.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Quantico";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("/assets/fonts/quantico-700.woff2") format("woff2");
+}
+@font-face {
+  font-family: "EB Garamond";
+  font-style: normal;
+  font-weight: 400 800;
+  font-display: swap;
+  src: url("/assets/fonts/eb-garamond-variable.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/assets/fonts/poppins-400.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("/assets/fonts/poppins-500.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("/assets/fonts/poppins-600.woff2") format("woff2");
+}
+
+:root {
+  --bg: #ffffff;
+  --text: #000000;
+  --navy: #14285a;
+  --rule: #dde2ec;
+  --display: "Quantico", "Arial Narrow", Arial, sans-serif;
+  --sans: "Poppins", "Segoe UI", system-ui, sans-serif;
+  --measure: 44rem;
+  --gutter: 1.25rem;
+}
+
+* { box-sizing: border-box; }
+html { background: var(--bg); }
+
+body {
+  margin: 0;
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  /* Column layout so main can grow and push the footer to the foot of short pages */
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+}
+main { flex: 1 0 auto; }
+/* main no longer collapses its last margin into the footer's, so drop it to keep the same gap */
+main > :last-child { margin-bottom: 0; }
+
+/* Body is full-width so the pinned header can span the page; content columns are constrained here. */
+.site-nav-inner,
+main,
+.site-footer {
+  width: 100%; /* flex items with auto margins would otherwise shrink to fit */
+  max-width: var(--measure);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.headshot { display: block; width: 120px; height: 120px; border-radius: 50%; object-fit: cover; margin-bottom: 1.25rem; }
+
+/* Name heading (pages with `hero:` front matter): pinned with the header but below its
+   rule line, with a photo masked into the letterforms. JS shrinks it on scroll. */
+h1.name-mask {
+  max-width: var(--measure);
+  margin: 0 auto;
+  padding: 0.75rem var(--gutter) 0.25rem;
+  color: var(--navy);
+  font-size: clamp(3rem, 12.5vw, 5.5rem);
+  white-space: nowrap;
+  text-align: center;
+}
+@supports (background-clip: text) or (-webkit-background-clip: text) {
+  h1.name-mask {
+    background-image: url("/assets/img/name-mask.webp");
+    background-size: cover;
+    background-position: center 0%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+  }
+}
+
+/* Header: pinned, full-width white band that page content scrolls behind.
+   The rule line sits under the nav row, above the hero name when there is one. */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  background: var(--bg);
+  border-top: 4px solid var(--navy); /* full-width strip that anchors the nav across the window */
+  margin-bottom: 2.5rem;
+}
+.site-nav { border-bottom: 1px solid var(--rule); }
+
+/* PCB-trace pattern on wide screens (one pre-generated board per page in assets/img/pcb/; tiles wrap
+   seamlessly). It sits on the page canvas and scrolls with it. The page is one white sheet with a
+   soft shadow lying on top of it, nav row included; the header is see-through beside the sheet so
+   the pattern runs up to the top. The breakpoint waits until the margins beside the 50rem sheet
+   are only about 1.5rem wide. */
+@media (min-width: 53rem) {
+  html { background: var(--bg) var(--pcb, none) center top / 1600px 1200px; } /* --pcb: set per page by the layout */
+  body { position: relative; }
+  body::before {
+    content: "";
+    position: absolute;
+    inset: 0 calc(50% - 25rem);
+    z-index: -1;
+    background: var(--bg);
+    box-shadow: 0 0 0 1px rgba(20, 40, 90, 0.05), 0 2px 5px rgba(20, 40, 90, 0.07), 0 6px 16px rgba(20, 40, 90, 0.09);
+  }
+  .site-header { background: linear-gradient(90deg, transparent calc(50% - 25rem), var(--bg) calc(50% - 25rem), var(--bg) calc(50% + 25rem), transparent calc(50% + 25rem)); }
+  .site-nav { max-width: 50rem; margin-inline: auto; background: var(--bg); }
+}
+
+.site-nav-inner {
+  padding-block: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.5rem 1.5rem;
+}
+.site-header nav { display: flex; gap: 1.25rem; font-family: var(--display); }
+.site-header nav a { color: var(--text); text-decoration: none; }
+.site-header nav a:hover { color: var(--navy); }
+.site-header nav a.current { color: var(--navy); text-decoration: underline; text-underline-offset: 0.2em; font-weight: 600; }
+
+/* Dropdowns. "Projects" is a link toggle that opens on hover or keyboard focus.
+   "Extras" (.disclosure) is a button toggled by dropdowns.js (.open), plus hover.
+   Hover-to-open only applies on devices that can hover, so touch taps don't get stuck open. */
+.dropdown { position: relative; font-family: var(--display); padding-bottom: 0.5rem; }
+.dropdown-toggle { cursor: default; display: inline-flex; align-items: center; gap: 0.3rem; }
+button.dropdown-toggle { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
+.dropdown:not(.disclosure):focus-within .dropdown-toggle,
+.dropdown.open .dropdown-toggle,
+.dropdown.current .dropdown-toggle { color: var(--navy); }
+.dropdown.current .toggle-label { text-decoration: underline; text-underline-offset: 0.2em; font-weight: 600; }
+.caret { display: inline-block; font-size: 0.7em; transition: transform 0.15s ease; }
+.dropdown:not(.disclosure):focus-within .caret,
+.dropdown.open .caret { transform: rotate(180deg); }
+@media (hover: hover) {
+  .dropdown:hover .dropdown-toggle { color: var(--navy); }
+  .dropdown:hover .caret { transform: rotate(180deg); }
+  .dropdown:hover .dropdown-menu { display: block; }
+}
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  left: 0;
+  top: 100%;
+  background: var(--bg);
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  padding: 0.4rem 0;
+  min-width: 11rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  z-index: 10;
+}
+.dropdown.align-right .dropdown-menu { left: auto; right: 0; }
+.dropdown:not(.disclosure):focus-within .dropdown-menu,
+.dropdown.open .dropdown-menu { display: block; }
+.dropdown-menu a {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.45rem 1rem;
+  color: var(--text);
+  text-decoration: none;
+  font-family: var(--sans);
+  font-size: 0.95rem;
+  white-space: nowrap;
+}
+.dropdown-menu a:hover { color: var(--navy); background: var(--rule); }
+.dropdown-divider { height: 1px; background: var(--rule); margin: 0.35rem 0.75rem; }
+
+/* New-tab marker on every link that opens a new tab (Material Symbols "open_in_new"),
+   masked so it takes the link's current color, including hover. */
+a[target="_blank"]::after {
+  content: "";
+  display: inline-block;
+  width: 0.8em;
+  height: 0.8em;
+  margin-left: 0.25em;
+  vertical-align: -0.05em;
+  background-color: currentColor;
+  -webkit-mask: url("/assets/img/open-in-new.svg") center / contain no-repeat;
+  mask: url("/assets/img/open-in-new.svg") center / contain no-repeat;
+}
+.dropdown-menu a[target="_blank"]::after { margin-left: 0; }
+
+/* Type: display font for headings only, sans for body */
+h1, h2, h3 {
+  font-family: var(--display);
+  color: var(--navy);
+  line-height: 1.15;
+  font-weight: 700;
+}
+h1 { font-size: clamp(2.25rem, 7vw, 3rem); margin: 0 0 1rem; letter-spacing: -0.01em; }
+h2 { font-size: 1.75rem; margin: 3rem 0 0.75rem; }
+h3 { font-size: 1.3rem; margin: 2rem 0 0.5rem; }
+
+a { color: var(--navy); text-underline-offset: 0.2em; }
+a:focus-visible,
+button:focus-visible { outline: 2px solid var(--navy); outline-offset: 3px; }
+
+.tagline { font-size: 1.25rem; margin: 0 0 1.5rem; max-width: 34rem; }
+
+/* Homepage intro block, centered under the centered hero name */
+.intro { text-align: center; }
+.intro .tagline { margin-inline: auto; }
+.intro .tagline:has(+ .seeking) { margin-bottom: 0.6rem; }
+.intro .links { justify-content: center; }
+.seeking { margin: 0 0 1.5rem; color: var(--navy); font-weight: 600; }
+
+/* Inline tool list closing the About Me section */
+.toolset { margin-top: 1.75rem; padding-top: 1rem; border-top: 1px solid var(--rule); }
+.toolset-label { display: block; margin-bottom: 0.3rem; font-family: var(--display); font-weight: 700; color: var(--navy); }
+.toolset ul { display: flex; flex-wrap: wrap; row-gap: 0.2rem; margin: 0; padding: 0; list-style: none; font-size: 0.92rem; }
+.toolset li { white-space: nowrap; }
+/* Separator trails each item, so a wrapped line never starts with a dot */
+.toolset li:not(:last-child)::after { content: "\00B7"; margin: 0 0.55rem; }
+
+.links { display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; padding: 0; margin: 0; list-style: none; }
+.links a { font-weight: 600; }
+
+/* Project entries on home and /projects/ */
+.project { border-top: 1px solid var(--rule); padding: 1.25rem 0; }
+.project h3 { margin: 0 0 0.25rem; }
+.project p { margin: 0 0 0.5rem; }
+/* Card with a thumbnail of the project beside the text (the whole image, uncropped) */
+.project.has-thumb { display: grid; grid-template-columns: 5.5rem 1fr; gap: 1.25rem; align-items: start; }
+.project-thumb { display: block; }
+.project-thumb img { display: block; width: 100%; height: auto; border-radius: 3px; }
+@media (max-width: 30rem) { .project.has-thumb { grid-template-columns: 4rem 1fr; gap: 1rem; } }
+.status { font-size: 0.95rem; }
+.upcoming-link { border-top: 1px solid var(--rule); margin-top: 0; padding: 1.25rem 0; }
+
+/* Project pages */
+img, audio, video { max-width: 100%; }
+img { height: auto; }
+audio { width: 100%; margin: 1rem 0; }
+
+.site-footer { margin-top: 4rem; padding-bottom: 4rem; font-size: 0.9rem; }
+.site-footer p {
+  margin: 0;
+  padding-top: 1rem;
+  border-top: 1px solid var(--rule);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.5rem 1.5rem;
+}
+.footer-links { display: flex; gap: 1.25rem; }
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* 404 page: the joke (message box and knight), then a plain explanation in normal site styles */
+.error-page { text-align: center; }
+.error-page .error-photo { width: 100%; max-width: 340px; height: auto; margin: 1rem auto 0; display: block; }
+.error-plain { margin-top: 1.25rem; }
+.error-plain h1 { margin: 0 0 0.35rem; font-size: clamp(3.5rem, 12vw, 5rem); line-height: 1; }
+.error-plain p { margin: 0 0 0.75rem; font-size: 1.1rem; }
+
+/* In-game message window after Dark Souls' floor messages: black torn-edge banner with a
+   drop shadow, white text, rating aligned right. */
+.ds-message {
+  position: relative;
+  isolation: isolate;
+  max-width: 360px;
+  margin: 0 auto;
+  padding: 0.8rem 1.3rem 0.7rem;
+  color: #fff;
+  font-family: "EB Garamond", "Adobe Garamond Pro", Garamond, Georgia, serif;
+  text-align: left;
+}
+/* The black backing is a separate layer so the tatter filter roughens only its edges, never the text */
+.ds-message::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: radial-gradient(ellipse at 50% 45%, rgba(10, 10, 10, 0.98), rgba(0, 0, 0, 0.98) 75%);
+  filter: url(#ds-tatter) drop-shadow(0 6px 10px rgba(0, 0, 0, 0.5));
+}
+.ds-text { margin: 0; font-size: 1.35rem; line-height: 1.2; letter-spacing: 0.02em; }
+.ds-rating { display: flex; justify-content: flex-end; gap: 2rem; margin: 0.3rem 0 0; font-size: 0.95rem; }
+
+/* Reduced motion: no scroll animation, so render the name statically at the size the
+   shrink would end at, keeping the pinned band compact. Kept last so it wins the cascade. */
+@media (prefers-reduced-motion: reduce) {
+  h1.name-mask { font-size: calc(clamp(3rem, 12.5vw, 5.5rem) * 0.55); }
+  .caret { transition: none; }
+}
