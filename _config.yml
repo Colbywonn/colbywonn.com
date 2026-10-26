@@ -1,0 +1,18 @@
+title: Colby Miller
+description: Computer Engineering student at the University of Utah, with experience in digital design and verification.
+url: "https://colbywonn.com"
+author: Colby Miller
+lang: en
+image: /headshot.jpg
+plugins:
+  - jekyll-seo-tag
+  - jekyll-sitemap
+exclude:
+  - README.md
+  - LICENSE
+tagline: Digital design and verification
+social:
+  name: Colby Miller
+  links:
+    - https://github.com/Colbywonn
+    - https://www.linkedin.com/in/Colbywonn

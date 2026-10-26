@@ -1,0 +1,46 @@
+---
+layout: default
+title: Page Not Found
+pcb: "404"
+permalink: /404.html
+---
+
+<div class="error-page">
+  <div class="ds-message">
+    <p class="ds-text">No Treasure Ahead</p>
+    <p class="ds-rating"><span>Rating</span><span>404</span></p>
+  </div>
+
+  <img src="{{ '/assets/img/404-knight.svg' | relative_url }}" alt="A shrugging knight in polygon art (Dark Souls fan art)" class="error-photo" width="500" height="309">
+
+  <div class="error-plain">
+    <h1>404</h1>
+    <p>This page doesn't exist or has moved.</p>
+    <p><a class="error-back" href="{{ '/' | relative_url }}">&#8592; Go back</a></p>
+  </div>
+
+  <!-- Torn edge plus mottled grain for the message box backing; referenced by .ds-message::before -->
+  <svg class="visually-hidden" aria-hidden="true" focusable="false">
+    <filter id="ds-tatter" x="-4%" y="-15%" width="108%" height="130%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency="0.12" numOctaves="3" seed="7" result="edgeNoise"/>
+      <feDisplacementMap in="SourceGraphic" in2="edgeNoise" scale="3" xChannelSelector="R" yChannelSelector="G" result="torn"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="3" seed="11" result="mottle"/>
+      <feColorMatrix in="mottle" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0.16 0 0 0 -0.04" result="mottleAlpha"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="3" result="grain"/>
+      <feColorMatrix in="grain" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0.07 0 0 0 0" result="grainAlpha"/>
+      <feMerge result="texture"><feMergeNode in="mottleAlpha"/><feMergeNode in="grainAlpha"/></feMerge>
+      <feComposite in="texture" in2="torn" operator="in" result="textureInside"/>
+      <feMerge><feMergeNode in="torn"/><feMergeNode in="textureInside"/></feMerge>
+    </filter>
+  </svg>
+</div>
+
+<script>
+  // Go back to the previous page when the visitor came from this site; otherwise the link goes home.
+  document.querySelector('.error-back').addEventListener('click', function (e) {
+    if (document.referrer.indexOf(location.origin + '/') === 0 && history.length > 1) {
+      e.preventDefault();
+      history.back();
+    }
+  });
+</script>
