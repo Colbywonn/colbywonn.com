@@ -34,6 +34,12 @@
           </div>
           <a href="{{ '/assets/resume.pdf' | relative_url }}" target="_blank" rel="noopener">Resume</a>
         </nav>
+        <div class="dropdown disclosure align-right">
+          <button type="button" class="dropdown-toggle" aria-expanded="false" aria-controls="extras-menu"><span class="toggle-label">Extras</span> <span class="caret" aria-hidden="true">&#9662;</span></button>
+          <div class="dropdown-menu" id="extras-menu">
+            <a href="https://fun.colbywonn.com" target="_blank" rel="noopener">Fun Stuff</a>
+          </div>
+        </div>
       </div>
     </div>
     {% if page.hero %}
@@ -54,6 +60,7 @@
       </span>
     </p>
   </footer>
+  <script src="{{ '/assets/js/dropdowns.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
   {% if page.hero %}
   <script src="{{ '/assets/js/name-mask-parallax.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
   {% endif %}
