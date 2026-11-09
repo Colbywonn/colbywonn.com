@@ -88,7 +88,11 @@ main,
   padding-inline: var(--gutter);
 }
 
+/* Floats beside the opening of About Me; on narrow screens it sits above the text instead */
 .headshot { display: block; width: 120px; height: 120px; border-radius: 50%; object-fit: cover; margin-bottom: 1.25rem; }
+@media (min-width: 30rem) {
+  .headshot { float: right; margin: 0.3rem 0 0.75rem 1.5rem; }
+}
 
 /* Name heading (pages with `hero:` front matter): pinned with the header but below its
    rule line, with a photo masked into the letterforms. JS shrinks it on scroll. */
