@@ -14,7 +14,7 @@ My personal experience with Jekyll is minimal, so this website was generated wit
 | `projects/` | Project index and one page per project |
 | `_layouts/default.html` | The single page layout: header, nav, footer |
 | `assets/css/site.css` | All styles |
-| `assets/js/` | Dropdown menus and the scrolling name header |
+| `assets/js/` | Dropdown menus |
 | `assets/fonts/` | Self-hosted Quantico, Poppins, and EB Garamond |
 | `assets/img/`, `assets/audio/` | Images, diagrams, and demo recordings |
 | `404.html` | Not-found page |
