@@ -14,6 +14,7 @@
     .pin { fill: #14285a; font-size: 13px; font-family: 'IBM Plex Mono', ui-monospace, monospace; }
     .sig { fill: #000000; font-size: 12px; font-family: ui-monospace, 'Consolas', monospace; text-anchor: middle; }
     .sig-left { fill: #000000; font-size: 12px; font-family: ui-monospace, 'Consolas', monospace; text-anchor: start; }
+    .sig-right { fill: #000000; font-size: 12px; font-family: ui-monospace, 'Consolas', monospace; text-anchor: end; }
     .wire { stroke: #14285a; stroke-width: 1.75; fill: none; }
     .boundary { fill: none; stroke: #000000; stroke-width: 1.5; stroke-dasharray: 6 5; }
     .ext { fill: none; stroke: #000000; stroke-width: 1.5; stroke-dasharray: 3 4; }
@@ -36,11 +37,11 @@
   <rect class="box" x="190" y="45" width="220" height="50" rx="6"/>
   <text class="label" x="300" y="75">SPI Interface</text>
 
-  <!-- branches down to DDS cores: parallel, straight vertical -->
+  <!-- branches down to DDS cores: parallel, straight vertical; labels sit beside their wires, not on them -->
   <path class="wire" d="M260,95 L260,130" marker-end="url(#arrow)"/>
   <path class="wire" d="M340,95 L340,130" marker-end="url(#arrow)"/>
-  <text class="sig" x="222" y="116">inc0/1/2 (32b)</text>
-  <text class="sig" x="378" y="116">cfg0/1/2 (4b)</text>
+  <text class="sig-right" x="252" y="116">inc0/1/2 (32b)</text>
+  <text class="sig-left" x="348" y="116">cfg0/1/2 (4b)</text>
 
   <!-- DDS cores -->
   <rect class="box" x="140" y="130" width="600" height="100" rx="6"/>

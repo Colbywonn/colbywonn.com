@@ -21,13 +21,13 @@ hero: Colby Miller
 
 Hello there!
 
-My name is Colby, and I'm a second-year student at the University of Utah. I've always loved computers, but my passion for them exploded during COVID, when I built my first PC in high school. I've been obsessed with all things computers ever since.
+My name is Colby, and I’m a second-year student at the University of Utah. I’ve always loved computers, but during the lockdown of COVID, I became truly passionate about them. I wanted to build my own PC, and so I started learning about them more and more.
 
-At first I learned everything I could about individual PC components so I could build better, more efficient machines. That led me to the architecture choices behind those components, and in my first year of university I carried that background into digital logic and optimization.
+At first I learned everything I could about individual PC components so I could build better, more cost-effective, PCs. That lead me to learn about the architectural choices that made some parts better than others. I knew that PCs ran on "ones and zeroes" but I never really understood what that meant. When I first started University, I was introduced to digital logic. I find it difficult to put into words just how astounding I found it. I still can't fathom how in the world we discovered even the most basic logic optimization techniques, let alone turned it into the most important advancement in mathematical reasoning since calculus. I decided that I wanted to, somehow, be a part of that legacy.
 
-After a two-year break for my mission, I decided it was time to start building for myself. I started learning Verilog to understand computers at a deeper level. Building my first Verilog project, [Poly-Synth](/projects/synth/), helped me find my vision: I want to design computer chips. Taking it all the way to an ASIC was a start, but I want to understand every part of digital design.
+After taking a two-year break from school to serve a religious mission, I decided it was time to start learning and building for myself. I started learning Verilog so I could begin to understand. I spend the summer building my first tapeout, which I call [Poly-Synth](/projects/synth/). During the process of researching and building Poly-Synth, I came to an important realization. I want to design computer chips. Taking a project from no experience in RTL all the way to an ASIC was exhilarating. My mission is to architect, design, and verify the efficient, powerful VLSI chips that the future of computation requires.
 
-There's still a lot to learn! This website is a portfolio of what I've learned so far and how I've applied it to real projects. Welcome, and take a look around. My projects are open source, so feel free to copy and modify them. I hope one of them inspires you to learn something new, too.
+There’s still a lot to learn! HDLBits and AI can only take me so far. This website is a portfolio of what I’ve learned so far and how I’ve applied it to projects that I found interesting. I hope that as my portfolio keeps expanding, so can my prowess as a chip architect. I intend to keep this website an honest representation of the processes I used and the reasoning behind my architectural decisions. I truly love this stuff. This website houses my projects, and the writeups I did for them. Please feel free to poke around a bit!
 
 <div class="toolset">
   <span class="toolset-label">Tools</span>
