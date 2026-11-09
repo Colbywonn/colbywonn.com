@@ -42,11 +42,9 @@
         </div>
       </div>
     </div>
-    {% if page.hero %}
-    <h1 class="name-mask">{{ page.hero }}</h1>
-    {% endif %}
   </header>
   <main>
+    {% if page.hero %}<h1 class="name-mask">{{ page.hero }}</h1>{% endif %}
     {{ content }}
   </main>
   <footer class="site-footer">
@@ -61,8 +59,5 @@
     </p>
   </footer>
   <script src="{{ '/assets/js/dropdowns.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
-  {% if page.hero %}
-  <script src="{{ '/assets/js/name-mask-parallax.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
-  {% endif %}
 </body>
 </html>

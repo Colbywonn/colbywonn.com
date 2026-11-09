@@ -94,12 +94,10 @@ main,
   .headshot { float: right; margin: 0.3rem 0 0.75rem 1.5rem; }
 }
 
-/* Name heading (pages with `hero:` front matter): pinned with the header but below its
-   rule line, with a photo masked into the letterforms. JS shrinks it on scroll. */
+/* Name heading (pages with `hero:` front matter): the first thing in the page, with a photo
+   masked into the letterforms. The negative top margin keeps it close under the nav's rule. */
 h1.name-mask {
-  max-width: var(--measure);
-  margin: 0 auto;
-  padding: 0.75rem var(--gutter) 0.25rem;
+  margin: -1.75rem 0 2.75rem;
   color: var(--navy);
   font-size: clamp(3rem, 12.5vw, 5.5rem);
   white-space: nowrap;
@@ -117,8 +115,7 @@ h1.name-mask {
   }
 }
 
-/* Header: pinned, full-width white band that page content scrolls behind.
-   The rule line sits under the nav row, above the hero name when there is one. */
+/* Header: pinned, full-width white band that page content scrolls behind. */
 .site-header {
   position: sticky;
   top: 0;
@@ -332,9 +329,7 @@ audio { width: 100%; margin: 1rem 0; }
 .ds-text { margin: 0; font-size: 1.35rem; line-height: 1.2; letter-spacing: 0.02em; }
 .ds-rating { display: flex; justify-content: flex-end; gap: 2rem; margin: 0.3rem 0 0; font-size: 0.95rem; }
 
-/* Reduced motion: no scroll animation, so render the name statically at the size the
-   shrink would end at, keeping the pinned band compact. Kept last so it wins the cascade. */
+/* Reduced motion. Kept last so it wins the cascade. */
 @media (prefers-reduced-motion: reduce) {
-  h1.name-mask { font-size: calc(clamp(3rem, 12.5vw, 5.5rem) * 0.55); }
   .caret { transition: none; }
 }
