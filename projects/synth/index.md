@@ -21,7 +21,7 @@ My target was to have the chip fit reasonably into a Tiny Tapeout submission, pa
 
 ## Listen to it here!
 
-Video game (or "Chiptune") music lends itself very well to the architecture of Poly-Synth. It creates the same waveforms that the sound chips in old video game consoles like the NES did, although they diverge greatly in their architecture. While testing Poly-Synth on an FPGA, I decided to see how well it could handle some of the songs from old video games. Using a program that converts MIDI files into the needed tuning words, I bit-banged them to the synthesizer. These recordings were actually driven by the FPGA, and are rather good replications of the original songs.
+Video game (or "Chiptune") music lends itself very well to the architecture of Poly-Synth. It creates the same waveforms that the sound chips in old video game consoles like the NES did, although they diverge greatly in their architecture. While testing Poly-Synth on an FPGA, I decided to see how well it could handle some of the songs from old video games. Using a program that converts MIDI files into the needed tuning words, I bit-banged them to the synthesizer. These recordings actually came from the FPGA, and are rather good replications of the original songs.
 
 Poly-Synth v1.0 has some limitations that its inspirations overcame, such as noise channels for percussion and more notes at once. With time, I plan to build up Poly-Synth so its capabilities are more akin to that of early synthesizers.
 
@@ -49,7 +49,9 @@ This right here is the die render of the ASIC. Honestly I'm still learning how t
 
 ## Verification
 
-Verification-wise, I tested each module of my RTL against a golden-model test bench. I identified the desired behavior of the circuit, designed a function to replicate the behavior, and tested that function against the actual behavior of the module. When a test came back off, I went into my RTL and GTKWave to correct behavior. (AI was very handy for this, please see [that section](#how-i-used-ai) for more on how I used AI for this project). This helped me catch errors, such as incorrectly handling reset values, or forgetting to initialize values on startup, so they always held x in GTKWave.
+Verification-wise, I tested each module of my RTL against a golden-model test bench. I identified the desired behavior of the circuit, designed a function to replicate the behavior, and tested that function against the actual behavior of the module.
+
+When a test came back off, I went into my RTL and GTKWave to correct behavior. (AI was very handy for this, please see [that section](#how-i-used-ai) for more on how I used AI for this project). This helped me catch errors, such as incorrectly handling reset values, or forgetting to initialize values on startup, so they always held x in GTKWave.
 
 When my test benches came back passing, I would mutation test my RTL, to prove that my tests would catch errors when there were actual errors in my code.
 
@@ -59,7 +61,21 @@ Lastly, I ran the RTL on an iCEBreaker FPGA, and checked the behavior by playing
 
 ## How I used AI
 
-Before this project, I knew digital logic, but I had never heard of RTL, HDLs, or Verilog. AI was by far the fastest way to learn. It taught me the basics of the language, helped me work out the architecture, and helped me debug. I spent time studying digital design concepts, studying on HDLBits, and used AI as an architectural generator. Almost every line of RTL was written by me, trying to apply the things I had learned. As I get better, I plan to lean on it less, especially for architecture.
+This project was kinda a 0-60 for me. I have been interested in digital logic and binary for a decade. I remember making binary tables in Excel after my dad taught me about binary. In my first year of University, I had the opportunity to work in a formal verification lab and learn the basics of digital optimization and logic. I wanted to figure out for myself how we can turn gates into usable ASICs and ideas that make people's lives easier.
+
+With the advent of Generative AI, access to knowledge has been accelerated, but also has made us lazier. With this project, I felt that dynamic sharply. While AI could help me learn things I never heard of before, it could also lull me into a sense of complacency and I let it make decisions for me.
+
+For this project, I wanted to start building my own foundation in Verilog. I began working in HDLBits to help me learn some of the basics.
+
+I then used AI to help me understand the exact architecture that would be needed, and it taught me the exact things that would be required to spec out my vague idea of "make a synth".
+
+Applying that architecture to what I learned of RTL, I would write my own modules and ask AI for correction. Sometimes I learned a lot from those corrections, other times it did a lot of the work for me.
+
+Almost every line of Verilog was written by me. AI would tell me the issues, but it wouldn't correct them for me, kind of like a mentor.
+
+My goal isn't to be an AI prompt engineer. It is to deeply understand architecture and the decisions engineers make to create better chips. AI is one of the greatest tools ever for learning. A taped-out ASIC as a first project is an amazing example of how AI has changed the learning process in even the past 2 years. This project would not have been possible without the help of AI, at least at my current state of knowledge.
+
+As I continue building projects and designing, I want to include AI less and less in the design process, while retaining a deep understanding on how to utilize its strengths effectively in learning and innovating.
 
 ## Status and next steps
 
