@@ -7,7 +7,7 @@ hero: true
 <div class="hero">
 <div class="hero-text">
   <h1 class="name-mask">Colby Miller</h1>
-  <p class="seeking">Computer Engineering student at the University of Utah, looking for a hardware or digital design internship for Summer 2027.</p>
+  <p class="role">Computer Engineering student at the University of Utah.<br>Looking for hardware design/verification internships for Summer &rsquo;27.</p>
   <ul class="links">
     <li><a href="/assets/resume.pdf" target="_blank" rel="noopener">Resume</a></li>
     <li><a href="https://github.com/Colbywonn" target="_blank" rel="noopener">GitHub</a></li>

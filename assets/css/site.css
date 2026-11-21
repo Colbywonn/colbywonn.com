@@ -95,11 +95,11 @@ main,
   padding-inline: var(--gutter);
 }
 
-/* Homepage hero: name, seeking line, and links on the left, headshot on the right.
+/* Homepage hero: name, role line, and links on the left, headshot on the right.
    On narrow screens the photo sits above instead. The negative top margin keeps it close under the nav's rule. */
 .hero { display: flex; align-items: center; gap: 1.75rem; margin: -1.25rem 0 3rem; }
 .hero-text { flex: 1; min-width: 0; }
-.hero .seeking { margin: 0 0 1rem; max-width: 32rem; }
+.hero .role { margin: 0 0 1rem; max-width: 32rem; }
 .headshot { display: block; flex-shrink: 0; width: 150px; height: 150px; border-radius: 18px; object-fit: cover; }
 @media (max-width: 36rem) {
   .hero { flex-direction: column-reverse; align-items: flex-start; gap: 1rem; }
@@ -248,9 +248,7 @@ a { color: var(--navy); text-underline-offset: 0.2em; }
 a:focus-visible,
 button:focus-visible { outline: 2px solid var(--navy); outline-offset: 3px; }
 
-.tagline { font-size: 1.25rem; margin: 0 0 1.5rem; max-width: 34rem; }
-
-.seeking { margin: 0 0 1.5rem; color: var(--navy); font-weight: 600; }
+.role { margin: 0 0 1.5rem; color: var(--navy); font-weight: 600; }
 
 /* Inline tool list closing the About Me section */
 .toolset { margin-top: 1.75rem; padding-top: 1rem; border-top: 1px solid var(--rule); }
