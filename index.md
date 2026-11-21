@@ -1,12 +1,13 @@
 ---
 layout: default
 title: Colby Miller
-hero: Colby Miller
+hero: true
 ---
 
-<div class="intro">
-  <p class="tagline">Computer Engineering student at the University of Utah, with experience in digital design &amp; verification.</p>
-  <p class="seeking">Looking for a hardware or digital design internship for Summer 2027.</p>
+<div class="hero">
+<div class="hero-text">
+  <h1 class="name-mask">Colby Miller</h1>
+  <p class="seeking">Computer Engineering student at the University of Utah, looking for a hardware or digital design internship for Summer 2027.</p>
   <ul class="links">
     <li><a href="/assets/resume.pdf" target="_blank" rel="noopener">Resume</a></li>
     <li><a href="https://github.com/Colbywonn" target="_blank" rel="noopener">GitHub</a></li>
@@ -14,10 +15,10 @@ hero: Colby Miller
     <li><a href="mailto:&#99;&#111;&#108;&#98;&#121;&#106;&#109;&#105;&#108;&#108;&#101;&#114;&#43;&#69;&#67;&#69;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;">Email</a></li>
   </ul>
 </div>
+<img class="headshot" src="/headshot.jpg" alt="Colby Miller" width="150" height="150" decoding="async">
+</div>
 
 ## About Me
-
-<img class="headshot" src="/headshot.jpg" alt="Colby Miller" width="120" height="120" loading="lazy" decoding="async">
 
 Hello there!
 
@@ -50,5 +51,3 @@ There’s still a lot to learn! HDLBits and AI can only take me so far. This web
     <p class="status">Taped out on Tiny Tapeout SKY26c, silicon pending</p>
   </div>
 </div>
-
-<p class="upcoming-link"><a href="/projects/upcoming/">In progress: a RISC-V graphing calculator CPU and a redstone cell library for Yosys &#8594;</a></p>

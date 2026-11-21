@@ -11,7 +11,7 @@
   <link rel="apple-touch-icon" href="{{ '/apple-touch-icon.png?v=2' | relative_url }}">
   <link rel="preload" href="{{ '/assets/fonts/quantico-700.woff2' | relative_url }}" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="{{ '/assets/fonts/quantico-400.woff2' | relative_url }}" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="{{ '/assets/fonts/poppins-400.woff2' | relative_url }}" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="{{ '/assets/fonts/plex-sans-400.woff2' | relative_url }}" as="font" type="font/woff2" crossorigin>
   {% if page.hero %}
   <link rel="preload" href="{{ '/assets/img/name-mask.webp' | relative_url }}" as="image" type="image/webp">
   {% endif %}
@@ -28,8 +28,6 @@
             <span class="dropdown-toggle"><a href="{{ '/projects/' | relative_url }}" class="toggle-label">Projects</a> <span class="caret" aria-hidden="true">&#9662;</span></span>
             <div class="dropdown-menu">
               <a href="{{ '/projects/synth/' | relative_url }}">Poly-Synth</a>
-              <div class="dropdown-divider"></div>
-              <a href="{{ '/projects/upcoming/' | relative_url }}">Upcoming Projects</a>
             </div>
           </div>
           <a href="{{ '/assets/resume.pdf' | relative_url }}" target="_blank" rel="noopener">Resume</a>
@@ -38,12 +36,11 @@
     </div>
   </header>
   <main>
-    {% if page.hero %}<h1 class="name-mask">{{ page.hero }}</h1>{% endif %}
     {{ content }}
   </main>
   <footer class="site-footer">
     <p>
-      <span>&copy; {{ 'now' | date: "%Y" }} Colby Miller &middot; <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></span>
+      <span>&copy; {{ 'now' | date: "%Y" }} Colby Miller &middot; <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a> &middot; Updated {{ site.time | date: "%B %-d, %Y" }}</span>
       <span class="footer-links">
         <a href="{{ '/assets/resume.pdf' | relative_url }}" target="_blank" rel="noopener">Resume</a>
         <a href="https://github.com/Colbywonn" target="_blank" rel="noopener">GitHub</a>

@@ -17,5 +17,3 @@ description: Projects by Colby Miller in digital design, electrical engineering,
     <p class="status">Taped out on Tiny Tapeout SKY26c, silicon pending</p>
   </div>
 </div>
-
-<p class="upcoming-link"><a href="/projects/upcoming/">Looking for what's next? See upcoming projects &#8594;</a></p>

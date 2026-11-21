@@ -27,25 +27,32 @@
   src: url("/assets/fonts/eb-garamond-variable.woff2") format("woff2");
 }
 @font-face {
-  font-family: "Poppins";
+  font-family: "IBM Plex Sans";
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url("/assets/fonts/poppins-400.woff2") format("woff2");
+  src: url("/assets/fonts/plex-sans-400.woff2") format("woff2");
 }
 @font-face {
-  font-family: "Poppins";
+  font-family: "IBM Plex Sans";
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/assets/fonts/plex-sans-400-italic.woff2") format("woff2");
+}
+@font-face {
+  font-family: "IBM Plex Sans";
   font-style: normal;
   font-weight: 500;
   font-display: swap;
-  src: url("/assets/fonts/poppins-500.woff2") format("woff2");
+  src: url("/assets/fonts/plex-sans-500.woff2") format("woff2");
 }
 @font-face {
-  font-family: "Poppins";
+  font-family: "IBM Plex Sans";
   font-style: normal;
   font-weight: 600;
   font-display: swap;
-  src: url("/assets/fonts/poppins-600.woff2") format("woff2");
+  src: url("/assets/fonts/plex-sans-600.woff2") format("woff2");
 }
 
 :root {
@@ -54,7 +61,7 @@
   --navy: #14285a;
   --rule: #dde2ec;
   --display: "Quantico", "Arial Narrow", Arial, sans-serif;
-  --sans: "Poppins", "Segoe UI", system-ui, sans-serif;
+  --sans: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
   --measure: 44rem;
   --gutter: 1.25rem;
 }
@@ -88,20 +95,25 @@ main,
   padding-inline: var(--gutter);
 }
 
-/* Floats beside the opening of About Me; on narrow screens it sits above the text instead */
-.headshot { display: block; width: 120px; height: 120px; border-radius: 50%; object-fit: cover; margin-bottom: 1.25rem; }
-@media (min-width: 30rem) {
-  .headshot { float: right; margin: 0.3rem 0 0.75rem 1.5rem; }
+/* Homepage hero: name, seeking line, and links on the left, headshot on the right.
+   On narrow screens the photo sits above instead. The negative top margin keeps it close under the nav's rule. */
+.hero { display: flex; align-items: center; gap: 1.75rem; margin: -1.25rem 0 3rem; }
+.hero-text { flex: 1; min-width: 0; }
+.hero .seeking { margin: 0 0 1rem; max-width: 32rem; }
+.headshot { display: block; flex-shrink: 0; width: 150px; height: 150px; border-radius: 18px; object-fit: cover; }
+@media (max-width: 36rem) {
+  .hero { flex-direction: column-reverse; align-items: flex-start; gap: 1rem; }
+  .headshot { width: 104px; height: 104px; border-radius: 14px; }
 }
 
-/* Name heading (pages with `hero:` front matter): the first thing in the page, with a photo
-   masked into the letterforms. The negative top margin keeps it close under the nav's rule. */
+/* Name heading, with a photo masked into the letterforms; fit to the text so the mask frames the name */
 h1.name-mask {
-  margin: -1.75rem 0 2.75rem;
+  width: fit-content;
+  margin: 0 0 0.6rem;
   color: var(--navy);
-  font-size: clamp(3rem, 12.5vw, 5.5rem);
+  font-size: clamp(2.75rem, 11vw, 5rem);
+  line-height: 1;
   white-space: nowrap;
-  text-align: center;
 }
 @supports (background-clip: text) or (-webkit-background-clip: text) {
   h1.name-mask {
@@ -205,7 +217,6 @@ button.dropdown-toggle { font: inherit; color: inherit; background: none; border
   white-space: nowrap;
 }
 .dropdown-menu a:hover { color: var(--navy); background: var(--rule); }
-.dropdown-divider { height: 1px; background: var(--rule); margin: 0.35rem 0.75rem; }
 
 /* New-tab marker on every link that opens a new tab (Material Symbols "open_in_new"),
    masked so it takes the link's current color, including hover. */
@@ -239,11 +250,6 @@ button:focus-visible { outline: 2px solid var(--navy); outline-offset: 3px; }
 
 .tagline { font-size: 1.25rem; margin: 0 0 1.5rem; max-width: 34rem; }
 
-/* Homepage intro block, centered under the centered hero name */
-.intro { text-align: center; }
-.intro .tagline { margin-inline: auto; }
-.intro .tagline:has(+ .seeking) { margin-bottom: 0.6rem; }
-.intro .links { justify-content: center; }
 .seeking { margin: 0 0 1.5rem; color: var(--navy); font-weight: 600; }
 
 /* Inline tool list closing the About Me section */
@@ -267,7 +273,6 @@ button:focus-visible { outline: 2px solid var(--navy); outline-offset: 3px; }
 .project-thumb img { display: block; width: 100%; height: auto; border-radius: 3px; }
 @media (max-width: 30rem) { .project.has-thumb { grid-template-columns: 4rem 1fr; gap: 1rem; } }
 .status { font-size: 0.95rem; }
-.upcoming-link { border-top: 1px solid var(--rule); margin-top: 0; padding: 1.25rem 0; }
 
 /* Project pages */
 img, audio, video { max-width: 100%; }
