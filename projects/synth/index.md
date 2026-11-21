@@ -15,7 +15,7 @@ description: A 3-voice polyphonic synthesizer ASIC, taped out on Tiny Tapeout SK
 
 Poly-Synth is my first ASIC, written in Verilog. It's a 3-voice polyphonic synthesizer. It takes a tuning word from a source (such as a computer), passes it through one of its 3 DDS cores, and converts it into an analog signal using a 1st-order sigma-delta DAC.
 
-I chose to build a synthesizer because of an experience I had in my Circuits I lab, where I used a headphone cable to listen to various wave frequencies generated from my Analog Discovery 2. I was interested in figuring out the methods used to turn digital signals into analog ones, and analyzing sound waves seems the easiest parallel to grasp to me.
+I chose to build a synthesizer because of an experience I had in my Circuits I lab, where I used a headphone cable to listen to various wave frequencies generated from my Analog Discovery 2. I was interested in figuring out the methods used to turn digital signals into analog ones, and analyzing sound waves seemed the easiest parallel to grasp to me.
 
 My target was to have the chip fit reasonably into a Tiny Tapeout submission, partly because it would give me solid engineering constraints. I had to decide which features I wanted baked into my chip, and which I wanted to handle outside the chip. Tasks such as SPI master and volume control were handed off to microcontrollers and potentiometers to save valuable surface area on the chip.
 
@@ -39,11 +39,13 @@ An arrangement of the theme composed by Kinuyo Yamashita and Satoe Terashima for
 
 ## System
 
-This diagram shows what's actually going on inside the chip. The system starts with an SPI peripheral, which is set to operate in mode 0. The interface stores the config settings and the tuning words, which are both sent in on MOSI, sequentially as needed. Those are then sent to the proper DDS core, where the tuning word drives a phase accumulator, making a sawtooth wave at whichever frequency described by the word. It is then shaped into a square (with PWM selection), sawtooth, or triangle wave depending on the configuration state currently held by the core. The 3 cores are then summed by a mixer, before being encoded by a 1st-order sigma-delta, to be recreated as an analog signal by a filter off-chip.
+This diagram shows what's actually going on inside the chip. The system starts with an SPI peripheral, which is set to operate in mode 0. The interface stores the config settings and the tuning words, which are both sent in on MOSI, sequentially as needed. Those are then sent to the proper DDS core, where the tuning word drives a phase accumulator, making a sawtooth wave at whichever frequency is described by the word. It is then shaped into a square (with PWM selection), sawtooth, or triangle wave depending on the configuration state currently held by the core. The 3 cores are then summed by a mixer, before being encoded by a 1st-order sigma-delta, to be recreated as an analog signal by a filter off-chip.
 
 <img src="/assets/img/block-diagram.svg" alt="Poly-Synth block diagram" width="820" height="600" loading="lazy" decoding="async">
 
 This right here is the die render of the ASIC. Honestly I'm still learning how to interpret things like this, but it sure looks cool :P
+
+The chip itself is 19,890 µm² of SKY130 cells, at around 60% utilization. That means the entire synthesizer runs in a space about 2 human hairs wide.
 
 <img src="/assets/img/die-render.webp" alt="Poly-Synth die render" width="1610" height="2258" loading="lazy" decoding="async">
 
@@ -61,21 +63,13 @@ Lastly, I ran the RTL on an iCEBreaker FPGA, and checked the behavior by playing
 
 ## How I used AI
 
-This project was kinda a 0-60 for me. I have been interested in digital logic and binary for a decade. I remember making binary tables in Excel after my dad taught me about binary. In my first year of University, I had the opportunity to work in a formal verification lab and learn the basics of digital optimization and logic. I wanted to figure out for myself how we can turn gates into usable ASICs and ideas that make people's lives easier.
+This project was kinda a 0-60 for me. I wanted to start building my own foundation in Verilog, so I began working in HDLBits to help me learn some of the basics. I then used AI to help me understand the architecture that would be needed, and it taught me the exact things that would be required to spec out my vague idea of "make a synth".
 
-With the advent of Generative AI, access to knowledge has been accelerated, but also has made us lazier. With this project, I felt that dynamic sharply. While AI could help me learn things I never heard of before, it could also lull me into a sense of complacency and I let it make decisions for me.
+Applying that architecture to what I learned of RTL, I would write my own modules and ask AI for correction. Sometimes I learned a lot from those corrections, other times I took its suggestions at face value.
 
-For this project, I wanted to start building my own foundation in Verilog. I began working in HDLBits to help me learn some of the basics.
+Almost every line of Verilog was written by me. AI would tell me the issues with my Verilog, and I would try to fix them myself with guidance. The biggest things I had AI handle entirely for me were the single line in `shaper.v`'s MUX for triangle waves, the top-level Python verification test, and the Python scripts for bit-banging to the FPGA.
 
-I then used AI to help me understand the exact architecture that would be needed, and it taught me the exact things that would be required to spec out my vague idea of "make a synth".
-
-Applying that architecture to what I learned of RTL, I would write my own modules and ask AI for correction. Sometimes I learned a lot from those corrections, other times it did a lot of the work for me.
-
-Almost every line of Verilog was written by me. AI would tell me the issues, but it wouldn't correct them for me, kind of like a mentor.
-
-My goal isn't to be an AI prompt engineer. It is to deeply understand architecture and the decisions engineers make to create better chips. AI is one of the greatest tools ever for learning. A taped-out ASIC as a first project is an amazing example of how AI has changed the learning process in even the past 2 years. This project would not have been possible without the help of AI, at least at my current state of knowledge.
-
-As I continue building projects and designing, I want to include AI less and less in the design process, while retaining a deep understanding on how to utilize its strengths effectively in learning and innovating.
+With the advent of Generative AI, access to knowledge has been accelerated, but also has made us lazier. It feels like being balanced on a sword's edge. While AI could help me learn things I never heard of before, it could also lull me into a sense of complacency and I could offload cognitive work to it. The difference between learning and lazing with AI is as thin as a FinFET. A taped-out ASIC as a first project is an amazing example of how AI has changed the learning process incredibly. This project would not have been possible without the help of AI, at least at my current state of knowledge. But my goal isn't to be an AI prompt engineer. It is to deeply understand architecture and the decisions engineers make to create better chips. As I continue building projects and designing, I want to include AI less and less in the design process, while retaining a deep understanding on how to utilize its strengths effectively in learning and innovating. I want to use AI to help me grow, not to ship things I don't understand.
 
 ## Status and next steps
 

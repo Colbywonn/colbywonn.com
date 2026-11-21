@@ -24,7 +24,7 @@ Hello there!
 
 My name is Colby, and I’m a second-year student at the University of Utah. I’ve always loved computers, but during the lockdown of COVID, I became truly passionate about them. I wanted to build my own PC, and so I started learning about them more and more.
 
-At first I learned everything I could about individual PC components so I could build better, more cost-effective PCs. That led me to learn about the architectural choices that made some parts better than others. I knew that PCs ran on "ones and zeroes" but I never really understood what that meant. When I first started university, I was introduced to digital logic. I find it difficult to put into words just how astounding I found it. I still can't fathom how anyone figured out even the most basic logic optimization techniques. Digital logic is probably the most important math since calculus, and I decided that I wanted to, somehow, be a part of that legacy.
+At first I learned everything I could about individual PC components so I could build better, more cost-effective PCs. That led me to learn about the architectural choices that made some parts better than others. I knew that PCs ran on "ones and zeroes," and I remember making binary tables in Excel after my dad taught me about binary, but I never really understood what that meant. In my first year of university, I had the opportunity to work in a formal verification lab and learn the basics of digital optimization and logic. I find it difficult to put into words just how astounding I found it. I still can't fathom how anyone figured out even the most basic logic optimization techniques. Digital logic is probably the most important math since calculus, and I decided that I wanted to, somehow, be a part of that legacy. I wanted to figure out for myself how we can turn gates into usable ASICs and ideas that make people's lives easier.
 
 After taking a two-year break from school to serve a religious mission, I decided it was time to start learning and building for myself. I started learning Verilog so I could begin to understand how computers really work. I spent the summer building my first tapeout, which I call [Poly-Synth](/projects/synth/). While researching and building Poly-Synth, I came to an important realization: I want to design computer chips. Taking a project from no experience in RTL all the way to an ASIC was exhilarating. My goal is to architect, design, and verify the efficient, powerful VLSI chips that the future of computation requires.
 
@@ -35,6 +35,7 @@ There’s still a lot to learn! HDLBits and AI can only take me so far. This web
   <ul>
     <li>Verilog</li>
     <li>Icarus Verilog</li>
+    <li>GTKWave</li>
     <li>Yosys &amp; nextpnr</li>
     <li>iCEBreaker FPGA</li>
     <li>Tiny Tapeout</li>
