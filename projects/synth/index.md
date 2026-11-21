@@ -7,7 +7,7 @@ description: A 3-voice polyphonic synthesizer ASIC, taped out on Tiny Tapeout SK
 
 # Poly-Synth
 
-<p class="status">Taped out on Tiny Tapeout SKY26c, silicon pending</p>
+<p class="status">Taped out on Tiny Tapeout SKY26c, still waiting on fab.</p>
 <ul class="links">
   <li><a href="https://github.com/Colbywonn/tt-poly-synth" target="_blank" rel="noopener">Repository on GitHub</a></li>
   <li><a href="https://tinytapeout.com/chips/ttsky26c/tt_um_colbywonn_poly_synth/" target="_blank" rel="noopener">Tiny Tapeout project page</a></li>

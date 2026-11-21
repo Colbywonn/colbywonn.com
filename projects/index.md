@@ -14,6 +14,6 @@ This page exists for when I have more projects. For now, it's a stepping stone b
   <div>
     <h3><a href="/projects/synth/">Poly-Synth</a></h3>
     <p>A 3-voice polyphonic synthesizer ASIC built from three DDS cores, a mixer, and a sigma-delta output.</p>
-    <p class="status">Taped out on Tiny Tapeout SKY26c, silicon pending</p>
+    <p class="status">Taped out on Tiny Tapeout SKY26c, still waiting on fab.</p>
   </div>
 </div>
